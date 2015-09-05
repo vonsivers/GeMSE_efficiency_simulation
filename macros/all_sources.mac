@@ -1,0 +1,24 @@
+#write primaries to root file
+/writePrimaries false
+
+#position of end cap = 3.95cm
+
+#Sample position in cm
+/gps/position 0 0 28.95
+
+/gps/energy 0 keV
+/gps/particle ion
+
+#Ba133
+#/gps/ion 56 133 0 0
+#/run/beamOn 10000000
+
+#Cs137
+/gps/ion 55 137 0 0
+/run/beamOn 10000000
+
+/gps/position 0 0 29.35
+
+#Co60
+/gps/ion 27 60 0 0
+/run/beamOn 10000000

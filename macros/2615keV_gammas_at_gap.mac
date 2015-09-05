@@ -1,0 +1,14 @@
+#write primaries to root file
+/writePrimaries false
+
+#z-position of gap center: 25.53 cm
+
+#Sample position in cm
+/gps/position 43 0 25.38
+
+/gps/particle gamma
+
+/gps/ang/type iso
+
+/gps/energy 2615 keV
+/run/beamOn 100000000

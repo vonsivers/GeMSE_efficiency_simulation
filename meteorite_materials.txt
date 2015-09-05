@@ -1,0 +1,31 @@
+:MIXT chondrite_H 3.42*g/cm3 8	
+O 0.3587
+Si 0.169
+Mg 0.14
+Fe 0.275
+S  0.02
+Al 0.0113
+Ca 0.0125
+Ni 0.0135
+
+:MIXT chondrite_L 3.36*g/cm3 9
+O 0.377
+Si 0.185
+Mg 0.149
+Fe 0.215
+S 0.022
+Al 0.0122
+Ca 0.0131
+Ni 0.012
+Na 0.0147
+
+:MIXT chondrite_LL 3.22*g/cm3 9
+O 0.40
+Si 0.189
+Mg 0.153
+Fe 0.185
+S 0.023
+Al 0.0119
+Ca 0.013
+Ni 0.0102
+Na 0.0149
