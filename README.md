@@ -20,7 +20,7 @@ GeMSE_efficiency -m <macrofile.mac> -g <geometry_file.txt> -o <results_folder>
 
 ## geometry_file.txt
 * contains information about sample geometry and material
-* for examples see folder example_geometries or refer to the Geant4 documentation (http://www.lhep.unibe.ch/darkmatter/darkwiki/lib/exe/fetch.php?hash=eeb53e&media=http%3A%2F%2Fgeant4.cern.ch%2Fcollaboration%2Fworking_groups%2Fgeometry%2Fdocs%2Ftextgeom%2Ftextgeom.pdf)
+* for examples see folder example_geometries or refer to the Geant4 documentation (http://geant4.cern.ch/collaboration/working_groups/geometry/docs/textgeom/textgeom.pdf)
 * **it is important that the sample volume is named “sample” otherwise the simulated decays/gammas will not be confined to this shape!**
 
 ## results_folder
