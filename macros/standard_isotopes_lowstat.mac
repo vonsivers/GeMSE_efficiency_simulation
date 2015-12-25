@@ -32,7 +32,7 @@
 /gps/ang/type iso
 
 #Pa234m (gammas)
-/file simulation_1001keV.root
+/file simulation_1001.0keV.root
 /gps/energy 1001 keV
 /run/beamOn 100000
 
@@ -59,76 +59,76 @@
 /file simulation_Pb214.root
 /gps/ion 82 214 0 0
 /grdm/nucleusLimits 214 214 82 82 
-/run/beamOn 100000
+/run/beamOn 1000000
 
 #Bi214
 /file simulation_Bi214.root
 /gps/ion 83 214 0 0
 /grdm/nucleusLimits 214 214 83 83 
-/run/beamOn 100000
+/run/beamOn 1000000
 
 #Ac228
 /file simulation_Ac228.root
 /gps/ion 89 228 0 0
 /grdm/nucleusLimits 228 228 89 89 
-/run/beamOn 100000
+/run/beamOn 1000000
 
 #Pb212
 /file simulation_Pb212.root
 /gps/ion 82 212 0 0
 /grdm/nucleusLimits 212 212 82 82 
-/run/beamOn 100000
+/run/beamOn 1000000
 
 #Bi212
 /file simulation_Bi212.root
 /gps/ion 83 212 0 0
 /grdm/nucleusLimits 212 212 83 83 
-/run/beamOn 100000
+/run/beamOn 1000000
 
 #Tl208
 /file simulation_Tl208.root
 /gps/ion 81 208 0 0
 /grdm/nucleusLimits 208 208 81 81 
-/run/beamOn 100000
+/run/beamOn 1000000
 
 #Cs137
 /file simulation_Cs137.root
 /gps/ion 55 137 0 0
 /grdm/nucleusLimits 137 137 55 55 
-/run/beamOn 100000
+/run/beamOn 1000000
 
 #Co60
 /file simulation_Co60.root
 /gps/ion 27 60 0 0
 /grdm/nucleusLimits 60 60 27 27 
-/run/beamOn 100000
+/run/beamOn 1000000
 
 #K40
 /file simulation_K40.root
 /gps/ion 19 40 0 0
 /grdm/nucleusLimits 40 40 19 19 
-/run/beamOn 100000
+/run/beamOn 1000000
 
 #Mn54
 /file simulation_Mn54.root
 /gps/ion 25 54 0 0
 /grdm/nucleusLimits 54 54 25 25 
-/run/beamOn 100000
+/run/beamOn 1000000
 
 #Ti44
 /file simulation_Ti44.root
 /gps/ion 22 44 0 0
 /grdm/nucleusLimits 44 44 22 22 
-/run/beamOn 100000
+/run/beamOn 1000000
 
 #Na22
 /file simulation_Na22.root
 /gps/ion 11 22 0 0
 /grdm/nucleusLimits 22 22 11 11 
-/run/beamOn 100000
+/run/beamOn 1000000
 
 #Al26
 /file simulation_Al26.root
 /gps/ion 13 26 0 0
 /grdm/nucleusLimits 26 26 13 13 
-/run/beamOn 100000
+/run/beamOn 1000000
