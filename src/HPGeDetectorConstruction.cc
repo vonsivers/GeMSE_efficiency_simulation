@@ -1,6 +1,7 @@
 
 #include "HPGeDetectorConstruction.hh"
 #include "HPGeSD.hh" 
+#include "MuonSD.hh"
 #include "HPGeRunAction.hh"
 
 #include "G4LogicalBorderSurface.hh"
@@ -35,10 +36,8 @@
 #include "globals.hh"
 
 
-HPGeDetectorConstruction::HPGeDetectorConstruction(G4String GeometryFile)
-{
-    fGeometryFile = GeometryFile;
-}
+HPGeDetectorConstruction::HPGeDetectorConstruction()
+{}
 
 HPGeDetectorConstruction::~HPGeDetectorConstruction()
 {}
@@ -117,30 +116,14 @@ G4VPhysicalVolume* HPGeDetectorConstruction::Construct()
 		
 	// +++++++ world volume ++++++++++++++++++++++++++++++++++ 
 
-    /*
+    
 	G4double expHall_x=10.*m;
 	G4double expHall_y=10.*m;
-	G4double expHall_z=10.*m;
+	G4double expHall_z=4.*m;
 	
-	G4Box* 			expHall_box  = new G4Box	   ("World",expHall_x,expHall_y,expHall_z);
+	G4Box* 			expHall_box  = new G4Box	   ("World",expHall_x/2.,expHall_y/2.,expHall_z/2.);
 	G4LogicalVolume* 	expHall_log  = new G4LogicalVolume (expHall_box,air_mat,"World",0,0,0);
 	G4VPhysicalVolume*    	expHall_phys = new G4PVPlacement   (0,G4ThreeVector(),expHall_log,"World",0,false,0);
-    */
-    
-    // +++++++ sample geometry + world volume ++++++++++++++++++++++++++++++++++
-    
-    //------------------------------------------------
-    // Define one or several text files containing the geometry description
-    //------------------------------------------------
-    G4tgbVolumeMgr* volmgr = G4tgbVolumeMgr::GetInstance();
-    volmgr->AddTextFile(fGeometryFile);
-    
-    //------------------------------------------------
-    // Read the text files and construct the GEANT4 geometry
-    //------------------------------------------------
-    G4VPhysicalVolume* physiWorld = volmgr->ReadAndConstructDetector();
-
-    G4LogicalVolume* expHall_log = G4tgbVolumeMgr::GetInstance()->FindG4LogVol("World",1);
     
 	
 	// +++++++ parts of Ge detector ++++++++++++++++++++++++++++++++++
@@ -363,6 +346,22 @@ G4VPhysicalVolume* HPGeDetectorConstruction::Construct()
     G4double yPosCuShieldingGap     = -ySizeCuShielding/2.+ySizeCuShieldingGap/2.;
     G4double zPosCuShieldingGap     = zPosCuPlateThin_mov-zSizeCuPlateThin_mov/2.-zSizeCuShieldingGap/2.;
     
+    // +++++++ muon panels ++++++++++++++++++++++++++++++++++
+    
+    G4double d_Panel = 2.*cm;
+    G4double lengthPanel = 140.*cm;
+    G4double widthPanel = 105.*cm;
+    
+    G4double yPosPanel_top = 17.*cm;
+    G4double zPosPanel_top = (zPosEndcap+heightEndcap/2.)+150.*cm+d_Panel/2.;
+    
+    G4double xPosPanel_back = 55.*cm+d_Panel/2.;
+    G4double yPosPanel_back = yPosPanel_top;
+    G4double zPosPanel_back = zPosPanel_top-widthPanel/2.;
+    
+    G4RotationMatrix rm3;
+    rm3.rotateY(90.*deg);
+    
     
     // +++++++ CBSS2 calibration source ++++++++++++++++++++++++++++++++++
     /*
@@ -430,6 +429,17 @@ G4VPhysicalVolume* HPGeDetectorConstruction::Construct()
     CBSS2_log->SetVisAttributes(violet);
 */
     
+    // +++++++ muon panels ++++++++++++++++++++++++++++++++++
+    
+    G4Box* panel_box			= new G4Box("panel_box",widthPanel/2.,lengthPanel/2.,d_Panel/2.);
+
+    G4LogicalVolume* panel_log  = new G4LogicalVolume(panel_box,pvt_mat,"panel_log", 0,0,0);
+    
+    // top panel
+    new G4PVPlacement(0,G4ThreeVector(0.,yPosPanel_top,zPosPanel_top),panel_log,"muon_panel_top",expHall_log,false,0);
+    
+    // back panel
+    new G4PVPlacement    (G4Transform3D(rm3,G4ThreeVector(xPosPanel_back,yPosPanel_back,zPosPanel_back)),panel_log,"muon_panel_back",expHall_log,false,0);
     
     // +++++++ parts of the shielding ++++++++++++++++++++++++++++++++++
     
@@ -776,7 +786,15 @@ G4VPhysicalVolume* HPGeDetectorConstruction::Construct()
     
 	Ge_log->SetSensitiveDetector(aSD);
     
+    // muon panels
+    G4String MuonSDname = "muon_panels";
+    MuonSD* muonSD = new MuonSD(MuonSDname);
+    
+    SDman->AddNewDetector(muonSD);
+    
+    panel_log->SetSensitiveDetector(muonSD);
+    
 	
-	return physiWorld;
+	return expHall_phys;
 }
 

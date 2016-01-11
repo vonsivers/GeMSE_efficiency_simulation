@@ -34,8 +34,6 @@
 #include "G4Timer.hh"
 
 #include "HPGeRunAction.hh"
-#include "HPGeTrackingAction.hh"
-#include "HPGeRunMessenger.hh"
 
 #include "G4Run.hh"
 #include "G4RunManager.hh"
@@ -49,15 +47,10 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-HPGeRunAction::HPGeRunAction(G4String OutputFolder)
+HPGeRunAction::HPGeRunAction()
 {
     timer = new G4Timer;
     
-    selectedAction = "default";
-    fOutputFolder = OutputFolder;
-    
-    //create a messenger for this class
-    runMessenger = new HPGeRunMessenger(this);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -65,7 +58,6 @@ HPGeRunAction::HPGeRunAction(G4String OutputFolder)
 HPGeRunAction::~HPGeRunAction()
 {
     delete timer;
-    delete runMessenger;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -75,44 +67,36 @@ void HPGeRunAction::BeginOfRunAction(const G4Run* aRun)
     TString ResultFileName;
 
     G4int RunID = aRun->GetRunID();
+    
+    std::ostringstream convert;   // stream used for the conversion
+    
+    convert << RunID;      // insert the textual representation in the characters in the stream
+    
+    TString RunName=convert.str();
+    
+    ResultFileName = "results_run" + RunName + ".root";
 
-    if (selectedAction=="default") {
-        
-        std::ostringstream convert;   // stream used for the conversion
-        
-        convert << RunID;      // insert the textual representation in the characters in the stream
-        
-        TString RunName=convert.str();
-        
-        ResultFileName = "results_run" + RunName + ".root";
-
-    }
-    else {
-
-        ResultFileName = selectedAction;
-
-    }
 	
     // try to open results directory
-    if (!gSystem->OpenDirectory(fOutputFolder)) {
+    if (!gSystem->OpenDirectory("results")) {
         
         // if directory does not exist make one
-        if (gSystem->MakeDirectory(fOutputFolder)==-1) {
-            std::cout << "###### ERROR: could not create directory " << fOutputFolder << std::endl;
+        if (gSystem->MakeDirectory("results")==-1) {
+            std::cout << "###### ERROR: could not create directory"<< std::endl;
         }
     }
 
     
-	ResultFile = new TFile(fOutputFolder+"/"+ResultFileName,"Create");
+	ResultFile = new TFile("results/"+ResultFileName,"Create");
     
     if (ResultFile->IsZombie()) {
         G4cout << "##### Warning: " << ResultFileName << " already exists! Overwriting!" << G4endl;
-        ResultFile = new TFile(fOutputFolder+"/"+ResultFileName,"recreate");
+        ResultFile = new TFile("results/"+ResultFileName,"recreate");
     }
     
         
     GeHitTree = new TTree("GeHits", "GeHits");
-    PrimariesTree = new TTree("Primaries", "Primaries");
+    MuonHitTree = new TTree("MuonHits", "MuonHits");
     RunTree = new TTree("RunInfo", "RunInfo");
     
     GeHitTree->Branch("EventID", &HEventID);
@@ -128,16 +112,19 @@ void HPGeRunAction::BeginOfRunAction(const G4Run* aRun)
     GeHitTree->Branch("Time", &Time);
     GeHitTree->Branch("Ekin", &HEkin);
     
-    PrimariesTree->Branch("EventID", &PEventID);
-    PrimariesTree->Branch("TrackID", &PTrackID);
-    PrimariesTree->Branch("ParentID", &ParentID);
-    PrimariesTree->Branch("Ekin", &PEkin);
-    PrimariesTree->Branch("xDir", &xDir);
-    PrimariesTree->Branch("yDir", &yDir);
-    PrimariesTree->Branch("zDir", &zDir);
-    PrimariesTree->Branch("ParticleID", &PParticleID);
-    PrimariesTree->Branch("CreatorProcess", &Process);
+    MuonHitTree->Branch("EventID", &HEventID);
+    MuonHitTree->Branch("NHits", &NHits);
+    MuonHitTree->Branch("TotEdep", &TotEdep);
     
+    MuonHitTree->Branch("TrackID", &HTrackID);
+    MuonHitTree->Branch("ParticleID", &HParticleID);
+    MuonHitTree->Branch("PanelNr", &PanelNr);
+    MuonHitTree->Branch("Edep", &Edep);
+    MuonHitTree->Branch("xPos", &xPos);
+    MuonHitTree->Branch("yPos", &yPos);
+    MuonHitTree->Branch("zPos", &zPos);
+    MuonHitTree->Branch("Time", &Time);
+    MuonHitTree->Branch("Ekin", &HEkin);
     
     RunTree->Branch("NEvents", &NEvents);
     RunTree->Branch("NDecays", &NDecays);
@@ -170,7 +157,7 @@ void HPGeRunAction::EndOfRunAction(const G4Run* aRun)
 	RunTree->Fill();
 	
 	GeHitTree->Write();
-	PrimariesTree->Write();
+	MuonHitTree->Write();
 	RunTree->Write();
 	
 	ResultFile->Close();
@@ -186,12 +173,12 @@ TTree* HPGeRunAction::GetGeHitTree()
 	return fGeHitTree;
 }
 
-
-TTree* HPGeRunAction::GetPrimariesTree()
+TTree* HPGeRunAction::GetMuonHitTree()
 {
-	fPrimariesTree=PrimariesTree;
-	return fPrimariesTree;
+    fMuonHitTree=MuonHitTree;
+    return fMuonHitTree;
 }
+
 
 void HPGeRunAction::AddDecay()
 {

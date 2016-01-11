@@ -6,14 +6,13 @@
 #include "G4ios.hh"
 
 #include "HPGeDetectorConstruction.hh"
-#include "HPGePhysicsList.hh"
+//#include "LBE.hh"
+#include "Shielding.hh"
 #include "HPGePrimaryGeneratorAction.hh"
 #include "HPGeRunAction.hh"
-#include "HPGeTrackingAction.hh"
 
 #include "Randomize.hh"
 #include <time.h>
-#include <getopt.h>
 
 #include "G4VisExecutive.hh"
 
@@ -23,57 +22,33 @@
 
 int main(int argc, char** argv)//
 {
-	// Choose the Random engine
-	CLHEP::HepRandom::setTheEngine(new CLHEP::RanecuEngine);
-	
-	//set random seed with system time
-	//G4long seed = time(NULL);
+    // Choose the Random engine
+    CLHEP::HepRandom::setTheEngine(new CLHEP::RanecuEngine);
     
-    // set seed
-	CLHEP::HepRandom::setTheSeed(24312);
-	
-  
-  // User Verbose output class
-  //
-  /*G4VSteppingVerbose* verbosity = new HPGeSteppingVerbose;
-  G4VSteppingVerbose::SetInstance(verbosity);*/
-  //-----------------------------
-    int c = 0;
-    bool Macro = false;
-    G4String MacroFilename;
-    G4String GeometryFilename = "worldVolume.txt";
-    G4String OutputFolder = "results";
+    //set random seed with system time
+    G4long seed = time(NULL);
+    CLHEP::HepRandom::setTheSeed(seed);
     
-    while((c = getopt(argc,argv,"m:o:g:")) != -1)
-    {
-        switch(c)
-        {
-            case 'm':
-                Macro = true;
-                MacroFilename = optarg;
-                break;
-                
-            case 'g':
-                GeometryFilename = optarg;
-                break;
-                
-            case 'o':
-                OutputFolder = optarg;
-                break;
-                
-                   }
-    }
-
+    
+    // User Verbose output class
+    //
+    /*G4VSteppingVerbose* verbosity = new HPGeSteppingVerbose;
+     G4VSteppingVerbose::SetInstance(verbosity);*/
+    //-----------------------------
+    
+    
+    
+    
     // Run manager
     //
     G4RunManager* runManager = new G4RunManager;
     
     // UserInitialization classes - mandatory
     //
-    G4VUserDetectorConstruction* detector = new HPGeDetectorConstruction(GeometryFilename);
+    G4VUserDetectorConstruction* detector = new HPGeDetectorConstruction;
     runManager-> SetUserInitialization(detector);
     //
-    G4VUserPhysicsList* physics = new HPGePhysicsList;
+    G4VUserPhysicsList* physics = new Shielding;
     runManager-> SetUserInitialization(physics);
     
     // visualization manager
@@ -83,14 +58,12 @@ int main(int argc, char** argv)//
     
     // UserAction classes
     //
-    HPGeRunAction* run_action = new HPGeRunAction(OutputFolder);
+    HPGeRunAction* run_action = new HPGeRunAction;
     runManager->SetUserAction(run_action);
     //
     HPGePrimaryGeneratorAction* gen_action = new HPGePrimaryGeneratorAction;
-    runManager->SetUserAction(gen_action);
+    runManager->SetUserAction(gen_action);    
     
-    G4UserTrackingAction* track_action = new HPGeTrackingAction;
-    runManager->SetUserAction(track_action);
     
     // Initialize G4 kernel
     //
@@ -99,45 +72,45 @@ int main(int argc, char** argv)//
     
     
     
-	
-
-	//
-	//------Shell & Visualization-------------------------------------------------
-	
-	if (!Macro) {
-	
-	// Define UI session for interactive mode
-	G4UIsession* session = new G4UIterminal();
-	
-	session->SessionStart();
-	delete session;
-	}
-	else {
-	  
-	  // Get the pointer to the User Interface manager
-	  G4UImanager* UI = G4UImanager::GetUIpointer();
-	
-	G4String command = "/control/execute "+MacroFilename;
-	UI->ApplyCommand(command);
-	
-	  
-	}
-		
-	
-	//-------------------------------------
-	
-
-	
-  // Job termination
-  // Free the store: user actions, physics_list and detector_description are
-  //                 owned and deleted by the run manager, so they should not
-  //                 be deleted in the main() program !
-
-  delete visManager;
-  delete runManager;
-  //delete verbosity;
-
-  return 0;
+    
+    //
+    //------Shell & Visualization-------------------------------------------------
+    
+    if (argc==1) {
+        
+        // Define UI session for interactive mode
+        G4UIsession* session = new G4UIterminal();
+        
+        session->SessionStart();
+        delete session;
+    }
+    else {
+        
+        // Get the pointer to the User Interface manager
+        G4UImanager* UI = G4UImanager::GetUIpointer();
+        
+        G4String command = "/control/execute ";
+        G4String fileName = argv[1];
+        UI->ApplyCommand(command+fileName);
+        
+        
+    }
+    
+    
+    //-------------------------------------
+    
+    
+    
+    // Job termination
+    // Free the store: user actions, physics_list and detector_description are
+    //                 owned and deleted by the run manager, so they should not
+    //                 be deleted in the main() program !
+    
+    delete visManager;
+    delete runManager;
+    //delete verbosity;
+    
+    return 0;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

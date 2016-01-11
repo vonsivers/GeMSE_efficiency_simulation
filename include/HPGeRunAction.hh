@@ -55,20 +55,17 @@ class HPGeRunMessenger;
 class HPGeRunAction : public G4UserRunAction
 {
   public:
-    HPGeRunAction(G4String Outputfolder);
+    HPGeRunAction();
    ~HPGeRunAction();
 
   public:
     void BeginOfRunAction(const G4Run* aRun);
     void EndOfRunAction(const G4Run* aRun);
 
+    TTree* GetMuonHitTree();
 	TTree* GetGeHitTree();
-	TTree* GetPrimariesTree();
 	
 	void AddDecay();
-    
-    void SelectAction(G4String string)	{ selectedAction = string; };
-    G4String GetSelectedAction()			{ return selectedAction; };
 
 
   private:
@@ -90,6 +87,7 @@ class HPGeRunAction : public G4UserRunAction
 	std::vector<double> zPos;
 	std::vector<int> HParticleID;
 	std::vector<int> HTrackID;
+    std::vector<int> PanelNr;
 
 	G4int PEventID;
 	G4int PTrackID;
@@ -103,17 +101,13 @@ class HPGeRunAction : public G4UserRunAction
 	
 	TFile* ResultFile;
 	
+    TTree* MuonHitTree;
 	TTree* GeHitTree;
-	TTree* PrimariesTree;
 	TTree* RunTree;
 	
+    TTree* fMuonHitTree;
 	TTree* fGeHitTree;
-	TTree* fPrimariesTree;
     
-    G4String selectedAction;
-    G4String fOutputFolder;
-
-    HPGeRunMessenger* runMessenger;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

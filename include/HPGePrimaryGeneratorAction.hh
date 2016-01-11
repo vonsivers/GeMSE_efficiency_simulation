@@ -24,19 +24,21 @@
 // ********************************************************************
 //
 //
-// $Id: HPGePrimaryGeneratorAction.hh,v 1.6 2006/06/29 17:54:04 gunter Exp $
-// GEANT4 tag $Name: geant4-09-01-patch-02 $
-//
+// $Id: HPGePrimaryGeneratorAction2.hh,v 1.3 2010-07-16 07:37:48 maire Exp $
+// GEANT4 tag $Name: geant4-09-04-patch-02 $
+// 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo...... 
 
 #ifndef HPGePrimaryGeneratorAction_h
 #define HPGePrimaryGeneratorAction_h 1
 
 #include "G4VUserPrimaryGeneratorAction.hh"
-//#include "globals.hh"
+#include "G4EventManager.hh"
+#include "globals.hh"
+#include "TH1D.h"
 
-class G4GeneralParticleSource;
+class G4ParticleGun;
 class G4Event;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -48,15 +50,17 @@ class HPGePrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
    ~HPGePrimaryGeneratorAction();
 
   public:
-    void GeneratePrimaries(G4Event* anEvent);
+    void GeneratePrimaries(G4Event*);
 
+  private:    
+    G4ParticleGun* particleGun;
+	G4EventManager* eventManager;
 	
-  private:
-    G4GeneralParticleSource* particleGun;
-	
-    
+ 	TH1D* zenith_angle;
+	TH1D* energy_spectrum;
+				
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#endif 
+#endif
