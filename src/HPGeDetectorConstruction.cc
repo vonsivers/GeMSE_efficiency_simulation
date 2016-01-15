@@ -117,7 +117,7 @@ G4VPhysicalVolume* HPGeDetectorConstruction::Construct()
 		
 	// +++++++ world volume ++++++++++++++++++++++++++++++++++ 
 
-    /*
+    
 	G4double expHall_x=10.*m;
 	G4double expHall_y=10.*m;
 	G4double expHall_z=10.*m;
@@ -125,22 +125,6 @@ G4VPhysicalVolume* HPGeDetectorConstruction::Construct()
 	G4Box* 			expHall_box  = new G4Box	   ("World",expHall_x,expHall_y,expHall_z);
 	G4LogicalVolume* 	expHall_log  = new G4LogicalVolume (expHall_box,air_mat,"World",0,0,0);
 	G4VPhysicalVolume*    	expHall_phys = new G4PVPlacement   (0,G4ThreeVector(),expHall_log,"World",0,false,0);
-    */
-    
-    // +++++++ sample geometry + world volume ++++++++++++++++++++++++++++++++++
-    
-    //------------------------------------------------
-    // Define one or several text files containing the geometry description
-    //------------------------------------------------
-    G4tgbVolumeMgr* volmgr = G4tgbVolumeMgr::GetInstance();
-    volmgr->AddTextFile(fGeometryFile);
-    
-    //------------------------------------------------
-    // Read the text files and construct the GEANT4 geometry
-    //------------------------------------------------
-    G4VPhysicalVolume* physiWorld = volmgr->ReadAndConstructDetector();
-
-    G4LogicalVolume* expHall_log = G4tgbVolumeMgr::GetInstance()->FindG4LogVol("World",1);
     
 	
 	// +++++++ parts of Ge detector ++++++++++++++++++++++++++++++++++
@@ -762,6 +746,19 @@ G4VPhysicalVolume* HPGeDetectorConstruction::Construct()
     new G4PVPlacement    (0,G4ThreeVector(0.,0.,zPosVacuumDet),VacuumDet_log,"VacuumDet",expHall_log,false,0);
     
     
+    // +++++++ calculate volumes ++++++++++++++++++++++++++++++++++
+    
+    G4cout << "############################" << G4endl;
+    G4cout << "########  Volume Detector Holder: " << DetHolder_uni6->GetCubicVolume()/cm3 << " cm^3" << G4endl;
+    G4cout << "########  Volume Detector Housing: " << CuHsg_uni2->GetCubicVolume()/cm3 << " cm^3" << G4endl;
+    G4cout << "########  Volume Coldfinger: " << Coldfinger_tube->GetCubicVolume()/cm3 << " cm^3" << G4endl;
+
+    G4cout << "############################" << G4endl;
+    G4cout << "########  Volume Cu Shielding: " << CuShielding_sub3->GetCubicVolume()/cm3 << " cm^3" << G4endl;
+    G4cout << "########  Volume inner Pb Shielding: " << innerPbShielding_sub2->GetCubicVolume()/cm3 << " cm^3" << G4endl;
+    G4cout << "########  Volume outer Pb Shielding: " << outerPbShielding_sub2->GetCubicVolume()/cm3 << " cm^3" << G4endl;
+    
+
 
 	
 	//======= define sensitive detector ======================================
@@ -777,6 +774,6 @@ G4VPhysicalVolume* HPGeDetectorConstruction::Construct()
 	Ge_log->SetSensitiveDetector(aSD);
     
 	
-	return physiWorld;
+	return expHall_phys;
 }
 

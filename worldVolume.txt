@@ -1,3 +1,0 @@
-// Define the world volume
-:VOLU World BOX 10.*m 10.*m 10.*m G4_AIR
-:VIS World OFF
