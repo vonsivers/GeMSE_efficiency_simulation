@@ -1,20 +1,18 @@
 #write primaries to root file
 /writePrimaries false
 
-#z-position of center of sample cavity = 7.94cm
+#Sample position in cm
+/gps/position 0 0 29.64
 
 /gps/pos/type Volume
 /gps/pos/shape Para
 
-#sample position 
-/gps/pos/centre 0 -27.58 -15.075 cm
+#Sample size
+/gps/pos/halfx 20 cm
+/gps/pos/halfy 20 cm
+/gps/pos/halfz 4 cm
 
-#sample size
-/gps/pos/halfx 1. cm
-/gps/pos/halfy 25. cm
-/gps/pos/halfz 1. cm
-
-/gps/pos/confine Coldfinger
+/gps/pos/confine CuPlateMovable
 
 ##############################
 #simulate gammas only
@@ -23,16 +21,16 @@
 /gps/ang/type iso
 
 #Pa234m (gammas)
-/file Coldfinger_1001.0keV.root
+/file CuLid_1001.0keV.root
 /gps/energy 1001 keV
-/run/beamOn 10000000
+/run/beamOn 5000000
 
 
 #Th234 (gammas)
-/file Coldfinger_63.3keV.root
+/file CuLid_63.3keV.root
 /gps/energy 63.3 keV
 /run/beamOn 50000000
-/file Coldfinger_92.6keV.root
+/file CuLid_92.6keV.root
 /gps/energy 92.6 keV
 /run/beamOn 50000000
 
@@ -42,41 +40,41 @@
 /gps/energy 0 keV
 /gps/particle ion
 
-
-# rest of U238 chain from Pb214
-/file Coldfinger_Pb214.root
-/gps/ion 82 214 0 0
-/run/beamOn 10000000
+#Ra226
+/file CuLid_Ra226.root
+/gps/ion 88 226 0 0
+/run/beamOn 5000000
 
 #Th232
-/file Coldfinger_Th232.root
+/file CuLid_Th232.root
 /gps/ion 90 232 0 0
-/run/beamOn 10000000
+/run/beamOn 5000000
 
 #K40
-/file Coldfinger_K40.root
+/file CuLid_K40.root
 /gps/ion 19 40 0 0
-/run/beamOn 50000000
+/run/beamOn 10000000
 
 ##############################
 #cosmogenics
 ##############################
 #Co60
-/file Coldfinger_Co60.root
+/file CuLid_Co60.root
 /gps/ion 27 60 0 0
-/run/beamOn 10000000
+/run/beamOn 5000000
 
 #Co57
-/file Coldfinger_Co57.root
+/file CuLid_Co57.root
 /gps/ion 27 57 0 0
-/run/beamOn 50000000
+/run/beamOn 10000000
 
 #Co58
-/file Coldfinger_Co58.root
+/file CuLid_Co58.root
 /gps/ion 27 58 0 0
-/run/beamOn 10000000
+/run/beamOn 5000000
 
 #Mn54
-/file Coldfinger_Mn54.root
+/file CuLid_Mn54.root
 /gps/ion 25 54 0 0
-/run/beamOn 10000000
+/run/beamOn 5000000
+

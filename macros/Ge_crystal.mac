@@ -1,0 +1,32 @@
+#write primaries to root file
+/writePrimaries false
+
+#position of sample chamber center in cm
+/gps/position 0 0 0
+
+/gps/pos/type Volume
+/gps/pos/shape Para
+
+#Sample size
+/gps/pos/halfx 5 cm
+/gps/pos/halfy 5 cm 
+/gps/pos/halfz 5 cm
+
+/gps/pos/confine Ge_detector
+/gps/energy 0 keV
+/gps/particle ion
+
+#Zn65
+#/grdm/nucleusLimits 65 65 30 30 
+#/gps/ion 30 65 0 0
+#/run/beamOn 1000000
+
+#Ge68
+#/grdm/nucleusLimits 68 68 31 31 
+#/gps/ion 31 68 0 0
+#/run/beamOn 1000000
+
+#Mn54
+/file Ge_crystal_Mn54.root
+/gps/ion 25 54 0 0
+/run/beamOn 1000000

@@ -1,6 +1,7 @@
 
 #include "HPGeDetectorConstruction.hh"
-#include "HPGeSD.hh" 
+#include "HPGeSD.hh"
+#include "HPGeRunAction.hh"
 
 #include "G4LogicalBorderSurface.hh"
 #include "G4LogicalSkinSurface.hh"
@@ -22,17 +23,22 @@
 #include "G4UnionSolid.hh"
 #include "G4IntersectionSolid.hh"
 #include "G4SubtractionSolid.hh"
-#include "G4SystemOfUnits.hh" // new for version 4.10
-#include "G4PhysicalConstants.hh" // new for version 4.10
-#include "G4NistManager.hh" // new for version 4.10
+#include "G4SystemOfUnits.hh"
+#include "G4PhysicalConstants.hh"
+#include "G4NistManager.hh"
+#include "G4RunManager.hh"
+
+//#include "G4tgrMessenger.hh"
+#include "G4tgbVolumeMgr.hh"
+
 
 #include "globals.hh"
 
 
-
-
-HPGeDetectorConstruction::HPGeDetectorConstruction()
-{}
+HPGeDetectorConstruction::HPGeDetectorConstruction(G4String GeometryFile)
+{
+    fGeometryFile = GeometryFile;
+}
 
 HPGeDetectorConstruction::~HPGeDetectorConstruction()
 {}
@@ -41,79 +47,26 @@ HPGeDetectorConstruction::~HPGeDetectorConstruction()
 
 G4VPhysicalVolume* HPGeDetectorConstruction::Construct()
 {
-	
-	//======= define materials ==============================================
-
-	G4double density, fractionmass, temperature, pressure, a, z;
-    G4int ncomponents;
-
-	// define materials from NIST manager
-	G4NistManager* nist = G4NistManager::Instance();
-	
-	G4Material* air_mat = nist->FindOrBuildMaterial("G4_AIR");
-	G4Material* copper_mat   = nist->FindOrBuildMaterial("G4_Cu");
-	G4Material* lead_mat   = nist->FindOrBuildMaterial("G4_Pb");
-	G4Material* germanium_mat   = nist->FindOrBuildMaterial("G4_Ge");
-	
-	G4Material* pvt_mat   = nist->FindOrBuildMaterial("G4_PLASTIC_SC_VINYLTOLUENE");
-    G4Material* teflon_mat   = nist->FindOrBuildMaterial("G4_TEFLON");
     
-    G4Material* pmma_mat   = nist->FindOrBuildMaterial("G4_PLEXIGLASS");
-    G4Material* ps_mat   = nist->FindOrBuildMaterial("G4_POLYSTYRENE");
+    //======= define materials ==============================================
     
-    // define elements
-    G4Element* C  = nist->FindOrBuildElement("C");
-    G4Element* H  = nist->FindOrBuildElement("H");
-    G4Element* O  = nist->FindOrBuildElement("O");
-    G4Element* Si  = nist->FindOrBuildElement("Si");
-
+    // define materials from NIST manager
+    G4NistManager* nist = G4NistManager::Instance();
     
-    G4Material* matrix_mat = new G4Material("matrix", density=0.98*g/cm3, ncomponents=4);
-    matrix_mat->AddElement (C , fractionmass= 32.4*perCent);
-    matrix_mat->AddElement (H , fractionmass= 8.1*perCent);
-    matrix_mat->AddElement (O , fractionmass= 21.6*perCent);
-    matrix_mat->AddElement (Si , fractionmass= 37.9*perCent);
+    G4Material* air_mat = nist->FindOrBuildMaterial("G4_Pb");
+  
+    // +++++++ world volume ++++++++++++++++++++++++++++++++++
     
-	
-	G4Material* standardrock_mat = new G4Material("Standard_Rock", z=11., a=22.*g/mole,
-								   density=2.65*g/cm3);
-	
-	G4Material* vacuum_mat = new G4Material("Vacuum", z=7., a=14.007*g/mole,
-										density=1.e-12*g/cm3);
-	
-	//======= define colors ==============================================
-	
-	G4VisAttributes* red		= new G4VisAttributes(G4Colour(1.0,0.0,0.0));
-	G4VisAttributes* violet		= new G4VisAttributes(G4Colour(0.5,0.0,1.0));
-	G4VisAttributes* pink		= new G4VisAttributes(G4Colour(1.0,0.0,1.0));
-	G4VisAttributes* black		= new G4VisAttributes(G4Colour(1.0,1.0,1.0));
-	G4VisAttributes* lightblue  = new G4VisAttributes(G4Colour(0.0,0.5,1.0));
-	G4VisAttributes* yellow     = new G4VisAttributes(G4Colour(1.0,1.0,0.0));
-	G4VisAttributes* orange		= new G4VisAttributes(G4Colour(1.0,0.4,0.2));
-	G4VisAttributes* purple     = new G4VisAttributes(G4Colour(0.7,0.0,0.7));
-	G4VisAttributes* green		= new G4VisAttributes(G4Colour(0.0,1.0,0.0));
-	G4VisAttributes* blue		= new G4VisAttributes(G4Colour(0.0,0.0,1.0));
-	G4VisAttributes* cyan		= new G4VisAttributes(G4Colour(0.0,1.0,1.0));
-	G4VisAttributes* grey		= new G4VisAttributes(G4Colour(0.5,0.5,0.5));
-	
-	//======= define dimensions ============================================
-	
-	// overlap for boolean solids
-	double overlap = 0.0001 *cm;
-		
-	// +++++++ world volume ++++++++++++++++++++++++++++++++++ 
-
-	G4double expHall_x=1.*m;
-	G4double expHall_y=1.*m;
-	G4double expHall_z=1.*m;
-	
-	G4Box* 			expHall_box  = new G4Box	   ("World",expHall_x,expHall_y,expHall_z);
-	G4LogicalVolume* 	expHall_log  = new G4LogicalVolume (expHall_box,vacuum_mat,"World",0,0,0);
-	G4VPhysicalVolume*    	expHall_phys = new G4PVPlacement   (0,G4ThreeVector(),expHall_log,"World",0,false,0);
-	
-	expHall_log -> SetVisAttributes (G4VisAttributes::GetInvisible());
     
-	
-	return expHall_phys;
+    G4double expHall_x=1.*m;
+    G4double expHall_y=1.*m;
+    G4double expHall_z=1.*m;
+    
+    G4Box* 			expHall_box  = new G4Box	   ("World",expHall_x,expHall_y,expHall_z);
+    G4LogicalVolume* 	expHall_log  = new G4LogicalVolume (expHall_box,air_mat,"World",0,0,0);
+    G4VPhysicalVolume*    	expHall_phys = new G4PVPlacement   (0,G4ThreeVector(),expHall_log,"World",0,false,0);
+    
+    
+    return expHall_phys;
 }
 

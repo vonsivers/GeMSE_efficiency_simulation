@@ -101,14 +101,14 @@
 #/vis/geometry/set/visibility outerPbShielding_log 0 false
 #/vis/geometry/set/visibility innerPbShielding_log 0 false
 
-/vis/geometry/set/visibility CuPlateFixed_log 0 false
-/vis/geometry/set/visibility innerPbShieldingFixed_log 0 false
-/vis/geometry/set/visibility outerPbShieldingFixed_log 0 false
+#vis/geometry/set/visibility CuPlateFixed_log 0 false
+#/vis/geometry/set/visibility innerPbShieldingFixed_log 0 false
+#/vis/geometry/set/visibility outerPbShieldingFixed_log 0 false
 
-/vis/geometry/set/visibility innerPbShieldingMov_log 0 false
-/vis/geometry/set/visibility CuPlateMov_log 0 false
-/vis/geometry/set/visibility outerPbShieldingMov_log 0 false
-/vis/geometry/set/visibility CuShieldingGap_log 0 false
+#/vis/geometry/set/visibility innerPbShieldingMov_log 0 false
+#/vis/geometry/set/visibility CuPlateMov_log 0 false
+#/vis/geometry/set/visibility outerPbShieldingMov_log 0 false
+#/vis/geometry/set/visibility CuShieldingGap_log 0 false
 
 #/vis/geometry/set/visibility CuHsg_log 0 false
 #/vis/geometry/set/visibility Coldfinger_log 0 false
@@ -124,14 +124,14 @@
 #/vis/geometry/set/forceSolid Ge_log 0 true
 #/vis/geometry/set/forceSolid LiContact_log 0 true
 
-#/vis/viewer/set/style wireframe
+/vis/viewer/set/style wireframe
 #/vis/viewer/set/auxiliaryEdge true
-/vis/viewer/set/style surface
+#/vis/viewer/set/style surface
 #/vis/viewer/set/sectionPlane  on  0  0  0  cm  1  0  0
 #/vis/viewer/set/hiddenMarker true
 /vis/viewer/set/upThetaPhi 0 0
 /vis/viewer/set/targetPoint 0 0 0 cm
-/vis/viewer/zoom 2
+/vis/viewer/zoom 20
 /vis/ogl/set/printMode pixmap
 
 
@@ -152,20 +152,8 @@
 # For file-based drivers, use this to create an empty detector view:
 #/vis/viewer/flush
 
-/vis/viewer/set/viewpointThetaPhi 20 70
-/vis/ogl/printEPS
+#/vis/viewer/set/viewpointThetaPhi 90 0
+#/vis/ogl/printEPS
 
-/vis/geometry/set/forceSolid CuHsg_log 0 true
-/vis/geometry/set/forceSolid Coldfinger_log 0 true
-/vis/geometry/set/forceSolid sample 0 true
 
-/vis/viewer/set/style wireframe
-/vis/viewer/set/viewpointThetaPhi 90 0
-/vis/ogl/printEPS
-
-/vis/viewer/set/viewpointThetaPhi 90 90
-/vis/ogl/printEPS
-
-/vis/viewer/set/viewpointThetaPhi 0.001 89.999
-/vis/ogl/printEPS
 

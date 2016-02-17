@@ -7,12 +7,12 @@
 /gps/pos/shape Para
 
 #sample position 
-/gps/pos/centre 0 0 7.94 cm
+/gps/pos/centre 0 -27.58 -15.075 cm
 
 #sample size
-/gps/pos/halfx 12. cm
-/gps/pos/halfy 12. cm
-/gps/pos/halfz 17.5 cm
+/gps/pos/halfx 20. cm
+/gps/pos/halfy 40. cm
+/gps/pos/halfz 20. cm
 
 
 /gps/pos/confine CuHsg
@@ -25,18 +25,18 @@
 /gps/ang/type iso
 
 #Pa234m (gammas)
-/file DetHsg_1001.0keV.root
-/gps/energy 1001 keV
-/run/beamOn 100000
+#/file DetHsg_1001.0keV.root
+#/gps/energy 1001 keV
+#/run/beamOn 1000000
 
 
 #Th234 (gammas)
-/file DetHsg_63.3keV.root
-/gps/energy 63.3 keV
-/run/beamOn 100000
-/file DetHsg_92.6keV.root
-/gps/energy 92.6 keV
-/run/beamOn 100000
+#/file DetHsg_63.3keV.root
+#/gps/energy 63.3 keV
+#/run/beamOn 5000000
+#/file DetHsg_92.6keV.root
+#/gps/energy 92.6 keV
+#/run/beamOn 5000000
 
 ##############################
 #switch to full decays
@@ -46,9 +46,9 @@
 
 
 # rest of U238 chain from Pb214
-/file DetHsg_Pb214.root
-/gps/ion 82 214 0 0
-/run/beamOn 1000000
+#/file DetHsg_Pb214.root
+#/gps/ion 82 214 0 0
+#/run/beamOn 10000000
 
 #Th232
 /file DetHsg_Th232.root
@@ -58,7 +58,7 @@
 #K40
 /file DetHsg_K40.root
 /gps/ion 19 40 0 0
-/run/beamOn 1000000
+/run/beamOn 5000000
 
 ##############################
 #cosmogenics
@@ -76,4 +76,9 @@
 #Co58
 /file DetHsg_Co58.root
 /gps/ion 27 58 0 0
+/run/beamOn 1000000
+
+#Mn54
+/file DetHsg_Mn54.root
+/gps/ion 25 54 0 0
 /run/beamOn 1000000

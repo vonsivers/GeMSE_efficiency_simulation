@@ -370,6 +370,13 @@ G4VPhysicalVolume* HPGeDetectorConstruction::Construct()
     G4cout << "############################" << G4endl;
     G4cout << "z-position of endcap: " << (zPosEndcap+heightEndcap/2.)/cm << " cm" << G4endl;
     G4cout << "z-position of sample cavity center: " << (zPosCuShielding+zSizeCuShielding/2.-zSizeSampleChamber/2.)/cm << " cm" << G4endl;
+    G4cout << "position of Coldfinger (cm): " << "(0, " << yPosArm/cm << ", " << zPosArm/cm << ")"<< G4endl;
+    G4cout << "z-position of DetHolder: " << (zPosDetHolder)/cm << " cm" << G4endl;
+    G4cout << "z-position of Cu shielding: " << (zPosCuShielding)/cm << " cm" << G4endl;
+    G4cout << "z-position of inner Pb shielding: " << (zPosInnerPbShielding)/cm << " cm" << G4endl;
+    
+    G4cout << "position of Cu plate lid (cm): " << "(0, " << yPosCuPlateThin_mov/cm << ", " <<zPosCuPlateThin_mov/cm << ")"<< G4endl;
+
     //G4cout << "z-position of gap center: " << (zPosOuterPbShielding+zSizeOuterPbShielding/2.+d_lid/2.)/cm << " cm" << G4endl;
     //G4cout << "z-position of source: " << zPosCBSS2/cm << " cm" << G4endl;
     G4cout << "############################" << G4endl;
@@ -745,6 +752,18 @@ G4VPhysicalVolume* HPGeDetectorConstruction::Construct()
     // place volumes
     new G4PVPlacement    (0,G4ThreeVector(0.,0.,zPosVacuumDet),VacuumDet_log,"VacuumDet",expHall_log,false,0);
     
+    // +++++++ sample chamber ++++++++++++++++++++++++++++++++++
+    
+    G4Box* SampleChamber_box = new G4Box("SampleChamber_box",xSizeSampleChamber/2.-0.01*cm, ySizeSampleChamber/2.-0.01*cm, zSizeSampleChamber/2.-0.01*cm);
+    
+    G4Tubs*	SampleChamberHole_tube = new G4Tubs("SampleChamberHole_tube", 0, outerRadiusEndcap+0.01*cm, (heightCuHsg/2.+heightEndcap/2.)+0.01*cm, startAngle, spanningAngle);
+    
+    G4SubtractionSolid* SampleCavity_sub = new G4SubtractionSolid("SampleCavity_sub",SampleChamber_box,SampleChamberHole_tube,0,G4ThreeVector(0.,0.,zPosEndcap-(zPosCuShielding+zSizeCuShielding/2.-zSizeSampleChamber/2.)-heightCuHsg/2.));
+
+    G4LogicalVolume* 	SampleCavity_log  = new G4LogicalVolume  (SampleCavity_sub,air_mat,"SampleCavity_log",0,0,0);
+
+    new G4PVPlacement    (0,G4ThreeVector(0.,0.,(zPosCuShielding+zSizeCuShielding/2.-zSizeSampleChamber/2.)),SampleCavity_log,"SampleCavity",expHall_log,false,0);
+    
     
     // +++++++ calculate volumes ++++++++++++++++++++++++++++++++++
     
@@ -758,7 +777,11 @@ G4VPhysicalVolume* HPGeDetectorConstruction::Construct()
     G4cout << "########  Volume inner Pb Shielding: " << innerPbShielding_sub2->GetCubicVolume()/cm3 << " cm^3" << G4endl;
     G4cout << "########  Volume outer Pb Shielding: " << outerPbShielding_sub2->GetCubicVolume()/cm3 << " cm^3" << G4endl;
     
-
+    G4cout << "############################" << G4endl;
+    G4cout << "########  Volume Ge crystal: " << GeIn_sub->GetCubicVolume()/cm3 << " cm^3" << G4endl;
+    
+    G4cout << "############################" << G4endl;
+    G4cout << "########  Volume Sample Cavity: " << SampleCavity_sub->GetCubicVolume()/cm3 << " cm^3" << G4endl;
 
 	
 	//======= define sensitive detector ======================================

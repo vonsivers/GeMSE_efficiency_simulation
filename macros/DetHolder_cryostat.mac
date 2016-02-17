@@ -7,12 +7,12 @@
 /gps/pos/shape Para
 
 #sample position 
-/gps/pos/centre 0 0 7.94 cm
+/gps/pos/centre 0 0 -0.895 cm
 
 #sample size
-/gps/pos/halfx 12. cm
-/gps/pos/halfy 12. cm
-/gps/pos/halfz 17.5 cm
+/gps/pos/halfx 10. cm
+/gps/pos/halfy 10. cm
+/gps/pos/halfz 15. cm
 
 /gps/pos/confine DetHolder
 
@@ -26,15 +26,15 @@
 #Pa234m (gammas)
 /file DetHolder_1001.0keV.root
 /gps/energy 1001 keV
-/run/beamOn 100000
+/run/beamOn 1000000
 
 #Th234 (gammas)
 /file DetHolder_63.3keV.root
 /gps/energy 63.3 keV
-/run/beamOn 100000
+/run/beamOn 1000000
 /file DetHolder_92.6keV.root
 /gps/energy 92.6 keV
-/run/beamOn 100000
+/run/beamOn 1000000
 
 ##############################
 #switch to full decays
@@ -56,7 +56,7 @@
 #K40
 /file DetHolder_K40.root
 /gps/ion 19 40 0 0
-/run/beamOn 1000000
+/run/beamOn 5000000
 
 ##############################
 #cosmogenics
@@ -69,9 +69,14 @@
 #Co57
 /file DetHolder_Co57.root
 /gps/ion 27 57 0 0
-/run/beamOn 1000000
+/run/beamOn 5000000
 
 #Co58
 /file DetHolder_Co58.root
 /gps/ion 27 58 0 0
+/run/beamOn 1000000
+
+#Mn54
+/file DeHolder_Mn54.root
+/gps/ion 25 54 0 0
 /run/beamOn 1000000

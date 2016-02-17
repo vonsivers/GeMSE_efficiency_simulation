@@ -78,6 +78,8 @@ void HPGeTrackingAction::PostUserTrackingAction(const G4Track* theTrack){
 			zDir=VDir[2];
             ParticleID = new G4String(particleDefinition->GetParticleName());
             
+            //G4cout << "#### Particle: " << *ParticleID << G4endl;
+            
             if(theTrack->GetCreatorProcess()!=0){
                 CreatorProcess = new G4String(theTrack->GetCreatorProcess()->GetProcessName());
             }
