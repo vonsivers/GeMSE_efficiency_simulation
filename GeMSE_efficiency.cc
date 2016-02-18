@@ -30,8 +30,8 @@ int main(int argc, char** argv)//
 	G4long seed = time(NULL);
     
     // set seed
-	CLHEP::HepRandom::setTheSeed(seed);
-	
+	//CLHEP::HepRandom::setTheSeed(seed);
+    G4Random::setTheSeed(seed); // changed for Geant4.10 in MT mode
   
   // User Verbose output class
   //
