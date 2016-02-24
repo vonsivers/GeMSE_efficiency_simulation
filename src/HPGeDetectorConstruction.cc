@@ -377,6 +377,9 @@ G4VPhysicalVolume* HPGeDetectorConstruction::Construct()
     
     G4cout << "position of Cu plate lid (cm): " << "(0, " << yPosCuPlateThin_mov/cm << ", " <<zPosCuPlateThin_mov/cm << ")"<< G4endl;
 
+    G4cout << "position of inner Pb (cm): " << "(0, " << yPosInnerPbShielding_mov/cm << ", " <<zPosInnerPbShielding_mov/cm << ")"<< G4endl;
+
+    
     //G4cout << "z-position of gap center: " << (zPosOuterPbShielding+zSizeOuterPbShielding/2.+d_lid/2.)/cm << " cm" << G4endl;
     //G4cout << "z-position of source: " << zPosCBSS2/cm << " cm" << G4endl;
     G4cout << "############################" << G4endl;
@@ -776,6 +779,9 @@ G4VPhysicalVolume* HPGeDetectorConstruction::Construct()
     G4cout << "########  Volume Cu Shielding: " << CuShielding_sub3->GetCubicVolume()/cm3 << " cm^3" << G4endl;
     G4cout << "########  Volume inner Pb Shielding: " << innerPbShielding_sub2->GetCubicVolume()/cm3 << " cm^3" << G4endl;
     G4cout << "########  Volume outer Pb Shielding: " << outerPbShielding_sub2->GetCubicVolume()/cm3 << " cm^3" << G4endl;
+    
+    G4cout << "############################" << G4endl;
+    G4cout << "########  Volume inner Pb Shielding Lid: " << innerPbShieldingMov_uni3->GetCubicVolume()/cm3 << " cm^3" << G4endl;
     
     G4cout << "############################" << G4endl;
     G4cout << "########  Volume Ge crystal: " << GeIn_sub->GetCubicVolume()/cm3 << " cm^3" << G4endl;
