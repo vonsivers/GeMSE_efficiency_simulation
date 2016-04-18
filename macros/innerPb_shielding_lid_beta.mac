@@ -1,0 +1,28 @@
+#write primaries to root file
+/writePrimaries false
+
+#position of sample chamber in cm
+#/gps/position 0 0 36.14
+/gps/position 0 0 34.89
+
+/gps/pos/type Volume
+/gps/pos/shape Para
+
+#Sample size
+/gps/pos/halfx 20 cm
+/gps/pos/halfy 20 cm
+/gps/pos/halfz 1.25 cm
+
+# V_Pb = 4000 cm^3
+
+/gps/pos/confine innerPbShieldingMovable
+/gps/particle e-
+
+
+#Pb210
+/file innerPbShieldingLid_Bi210beta_halfVol.root
+/gps/ene/type Arb
+/gps/hist/file inputfiles/Bi210beta_spectrum.txt
+/gps/hist/inter Lin
+/run/beamOn 2000000000
+

@@ -25,13 +25,10 @@ int main(int argc, char** argv)//
 {
 	// Choose the Random engine
 	CLHEP::HepRandom::setTheEngine(new CLHEP::RanecuEngine);
-	
-	//set random seed with system time
-	G4long seed = time(NULL);
+
+	G4long seed=314159;
     
-    // set seed
-	//CLHEP::HepRandom::setTheSeed(seed);
-    G4Random::setTheSeed(seed); // changed for Geant4.10 in MT mode
+    //G4Random::setTheSeed(seed); // changed for Geant4.10 in MT mode
   
   // User Verbose output class
   //
@@ -42,9 +39,9 @@ int main(int argc, char** argv)//
     bool Macro = false;
     G4String MacroFilename;
     G4String GeometryFilename = "worldVolume.txt";
-    G4String OutputFolder = "results";
+    G4String OutputFolder = "results.root";
     
-    while((c = getopt(argc,argv,"m:o:g:")) != -1)
+    while((c = getopt(argc,argv,"m:o:g:s:")) != -1)
     {
         switch(c)
         {
@@ -60,9 +57,16 @@ int main(int argc, char** argv)//
             case 'o':
                 OutputFolder = optarg;
                 break;
+     
+            case 's':
+                seed = atoi(optarg);
+                break;
                 
                    }
     }
+
+    // set seed
+    CLHEP::HepRandom::setTheSeed(seed);
 
     // Run manager
     //

@@ -54,7 +54,7 @@ HPGeRunAction::HPGeRunAction(G4String OutputFolder)
     timer = new G4Timer;
     
     selectedAction = "default";
-    fOutputFolder = OutputFolder;
+    fOutputFile = OutputFolder;
     
     //create a messenger for this class
     runMessenger = new HPGeRunMessenger(this);
@@ -94,21 +94,22 @@ void HPGeRunAction::BeginOfRunAction(const G4Run* aRun)
     }
 	
     // try to open results directory
-    if (!gSystem->OpenDirectory(fOutputFolder)) {
+   // if (!gSystem->OpenDirectory("results")) {
         
         // if directory does not exist make one
-        if (gSystem->MakeDirectory(fOutputFolder)==-1) {
-            std::cout << "###### ERROR: could not create directory " << fOutputFolder << std::endl;
-        }
-    }
+        //if (gSystem->MakeDirectory("results")==-1) {
+        //    std::cout << "###### ERROR: could not create directory results " << std::endl;
+      //  }
+    //}
 
+     //   G4String OutputName = "results/"+fOutputFile;
+
+//	ResultFile = new TFile(fOutputFile,"Create");
     
-	ResultFile = new TFile(fOutputFolder+"/"+ResultFileName,"Create");
-    
-    if (ResultFile->IsZombie()) {
-        G4cout << "##### Warning: " << ResultFileName << " already exists! Overwriting!" << G4endl;
-        ResultFile = new TFile(fOutputFolder+"/"+ResultFileName,"recreate");
-    }
+ //   if (ResultFile->IsZombie()) {
+   //     G4cout << "##### Warning: " << fOutputFile << " already exists! Overwriting!" << G4endl;
+        ResultFile = new TFile(fOutputFile,"recreate");
+   // }
     
         
     GeHitTree = new TTree("GeHits", "GeHits");

@@ -111,7 +111,7 @@ class HPGeRunAction : public G4UserRunAction
 	TTree* fPrimariesTree;
     
     G4String selectedAction;
-    G4String fOutputFolder;
+    G4String fOutputFile;
 
     HPGeRunMessenger* runMessenger;
 };
