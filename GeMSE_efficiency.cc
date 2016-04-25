@@ -61,7 +61,7 @@ int main(int argc, char** argv)//
                 OutputFolder = optarg;
                 break;
                 
-                   }
+        }
     }
 
     // Run manager

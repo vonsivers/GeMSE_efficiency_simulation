@@ -33,10 +33,11 @@
 #define HPGeRunMessenger_h 1
 
 #include "G4UImessenger.hh"
+#include "HPGeAnalysis.hh"
 #include "globals.hh"
 
 class HPGeRunAction;
-class G4UIcmdWithAString;
+class G4UIcmdWithADouble;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -49,9 +50,17 @@ class HPGeRunMessenger: public G4UImessenger
     void SetNewValue(G4UIcommand*, G4String);
     
   private:
+    
+    HPGeAnalysis* RunAnalysis = new HPGeAnalysis();
+    
     HPGeRunAction* Action;
     
-    G4UIcmdWithAString* selectActionCmd;
+    G4UIcmdWithADouble* energyCmd;
+    G4UIcmdWithADouble* G4BRCmd;
+    G4UIcmdWithADouble* NuDatBRCmd;
+    G4UIcmdWithADouble* SigRegionCmd;
+    G4UIcmdWithADouble* BkgRegionCmd;
+
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -34,30 +34,28 @@
 #include "G4Timer.hh"
 
 #include "HPGeRunAction.hh"
-#include "HPGeTrackingAction.hh"
+#include "HPGeAnalysis.hh"
 #include "HPGeRunMessenger.hh"
 
 #include "G4Run.hh"
 #include "G4RunManager.hh"
 
-#include "TFile.h"
-#include "TBranch.h"
 #include "TTree.h"
-#include "TSystem.h"
 
 //#include <time.h>
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-HPGeRunAction::HPGeRunAction(G4String OutputFolder)
+HPGeRunAction::HPGeRunAction(TTree* tree)
 {
+    ftree = tree;
     timer = new G4Timer;
     
-    selectedAction = "default";
-    fOutputFolder = OutputFolder;
+    // create run analysis
+    fRunAnalysis = new HPGeAnalysis();
     
     //create a messenger for this class
-    runMessenger = new HPGeRunMessenger(this);
+    runMessenger = new HPGeRunMessenger(fRunAnalysis);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -65,6 +63,7 @@ HPGeRunAction::HPGeRunAction(G4String OutputFolder)
 HPGeRunAction::~HPGeRunAction()
 {
     delete timer;
+    delete fRunAnalysis;
     delete runMessenger;
 }
 
@@ -72,79 +71,10 @@ HPGeRunAction::~HPGeRunAction()
 
 void HPGeRunAction::BeginOfRunAction(const G4Run* aRun)
 {
-    TString ResultFileName;
-
+    
     G4int RunID = aRun->GetRunID();
-
-    if (selectedAction=="default") {
-        
-        std::ostringstream convert;   // stream used for the conversion
-        
-        convert << RunID;      // insert the textual representation in the characters in the stream
-        
-        TString RunName=convert.str();
-        
-        ResultFileName = "results_run" + RunName + ".root";
-
-    }
-    else {
-
-        ResultFileName = selectedAction;
-
-    }
-	
-    // try to open results directory
-    if (!gSystem->OpenDirectory(fOutputFolder)) {
-        
-        // if directory does not exist make one
-        if (gSystem->MakeDirectory(fOutputFolder)==-1) {
-            std::cout << "###### ERROR: could not create directory " << fOutputFolder << std::endl;
-        }
-    }
-
-    
-	ResultFile = new TFile(fOutputFolder+"/"+ResultFileName,"Create");
-    
-    if (ResultFile->IsZombie()) {
-        G4cout << "##### Warning: " << ResultFileName << " already exists! Overwriting!" << G4endl;
-        ResultFile = new TFile(fOutputFolder+"/"+ResultFileName,"recreate");
-    }
-    
-        
-    GeHitTree = new TTree("GeHits", "GeHits");
-    PrimariesTree = new TTree("Primaries", "Primaries");
-    RunTree = new TTree("RunInfo", "RunInfo");
-    
-    GeHitTree->Branch("EventID", &HEventID);
-    GeHitTree->Branch("NHits", &NHits);
-    GeHitTree->Branch("TotEdep", &TotEdep);
-    
-    GeHitTree->Branch("TrackID", &HTrackID);
-    GeHitTree->Branch("ParticleID", &HParticleID);
-    GeHitTree->Branch("Edep", &Edep);
-    GeHitTree->Branch("xPos", &xPos);
-    GeHitTree->Branch("yPos", &yPos);
-    GeHitTree->Branch("zPos", &zPos);
-    GeHitTree->Branch("Time", &Time);
-    GeHitTree->Branch("Ekin", &HEkin);
-    
-    PrimariesTree->Branch("EventID", &PEventID);
-    PrimariesTree->Branch("TrackID", &PTrackID);
-    PrimariesTree->Branch("ParentID", &ParentID);
-    PrimariesTree->Branch("Ekin", &PEkin);
-    PrimariesTree->Branch("xDir", &xDir);
-    PrimariesTree->Branch("yDir", &yDir);
-    PrimariesTree->Branch("zDir", &zDir);
-    PrimariesTree->Branch("ParticleID", &PParticleID);
-    PrimariesTree->Branch("CreatorProcess", &Process);
-    
-    
-    RunTree->Branch("NEvents", &NEvents);
-    RunTree->Branch("NDecays", &NDecays);
     
     NEvents = aRun->GetNumberOfEventToBeProcessed();
-    
-    fNDecays = 0;
     
     G4cout << "### Run " << RunID << " started with " << NEvents << " events." << G4endl;
     timer->Start();
@@ -156,47 +86,31 @@ void HPGeRunAction::BeginOfRunAction(const G4Run* aRun)
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void HPGeRunAction::EndOfRunAction(const G4Run* aRun)
-{   
+{
+    
+    // calculate efficiencies
+    fRunAnalysis->CalcEfficiencies();
+    
+    // fill ROOT Tree
+    double energy, efficiency;
+    ftree->Branch("energy",&energy);
+    ftree->Branch("eff_BR",&efficiency);
+    int nlines = fRunAnalysis->GetNLines();
+    for (int i=0; i<nlines; ++i) {
+        energy = fRunAnalysis->GetEnergy(i);
+        efficiency = fRunAnalysis->GetEfficiency(i);
+
+        ftree->Fill();
+    }
+    
 	timer->Stop();
-	
-	NDecays=fNDecays;
 	
 	G4cout << "\n" << "### Finished ###" << G4endl;
 	G4cout << "Runtime: " << *timer << G4endl;
 	
-	//-----------write trees and close file-------------
-	ResultFile->cd();
 	
-	RunTree->Fill();
-	
-	GeHitTree->Write();
-	PrimariesTree->Write();
-	RunTree->Write();
-	
-	ResultFile->Close();
-	
-	//delete GeHitTree;
-	//delete GammaTree;
-	delete ResultFile;
 }
 
-TTree* HPGeRunAction::GetGeHitTree()
-{
-	fGeHitTree=GeHitTree;
-	return fGeHitTree;
-}
-
-
-TTree* HPGeRunAction::GetPrimariesTree()
-{
-	fPrimariesTree=PrimariesTree;
-	return fPrimariesTree;
-}
-
-void HPGeRunAction::AddDecay()
-{
-	fNDecays++;
-}
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

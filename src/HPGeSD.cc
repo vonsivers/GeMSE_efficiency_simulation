@@ -62,7 +62,7 @@ void HPGeSD::Initialize(G4HCofThisEvent*)
 	
 }
 
-G4bool HPGeSD::ProcessHits(G4Step* aStep,G4TouchableHistory* ROhist){
+G4bool HPGeSD::ProcessHits(G4Step* aStep){
 
 	G4double edep = aStep->GetTotalEnergyDeposit();
 	G4ParticleDefinition* particleType = aStep->GetTrack()->GetDefinition();

@@ -26,7 +26,7 @@ class HPGeSD : public G4VSensitiveDetector
 	//! to the G4HCofThisEvent instance
 	void Initialize(G4HCofThisEvent*);
 	
-	G4bool ProcessHits(G4Step*, G4TouchableHistory*);
+	G4bool ProcessHits(G4Step*);
 	
 	void EndOfEvent(G4HCofThisEvent*);
 	
