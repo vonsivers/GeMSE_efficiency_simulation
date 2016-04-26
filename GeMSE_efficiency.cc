@@ -17,6 +17,7 @@
 #include <TFile.h>
 #include <TTree.h>
 #include <TCanvas.h>
+#include "TSystem.h"
 
 #include "G4VisExecutive.hh"
 
@@ -45,7 +46,7 @@ int main(int argc, char** argv)//
     bool Macro = false;
     G4String MacroFilename;
     G4String GeometryFilename = "worldVolume.txt";
-    G4String OutputFile = "simulated_efficiencies.root";
+    G4String OutputFolder = "results";
     
     while((c = getopt(argc,argv,"m:o:g:")) != -1)
     {
@@ -61,14 +62,30 @@ int main(int argc, char** argv)//
                 break;
                 
             case 'o':
-                OutputFile = optarg;
+                OutputFolder = optarg;
                 break;
                 
         }
     }
     
+    // try to open results directory
+    if (!gSystem->OpenDirectory(OutputFolder)) {
+        
+        // if directory does not exist make one
+        if (gSystem->MakeDirectory(OutputFolder)==-1) {
+            std::cout << "###### ERROR: could not create directory " << OutputFolder << std::endl;
+            return 0;
+        }
+    }
+    
     // create output file
-    TFile* file = new TFile(OutputFile,"recreate");
+    TFile* file = new TFile(fOutputFolder+"/simulated_efficiencies.root","Create");
+    
+    if (file->IsZombie()) {
+        G4cout << "###### ERROR: could not create file 'simulated_efficiencies.root'" << G4endl;
+        return 0;
+    }
+
     TTree* tree = new TTree("tree","tree");
     
     // Run manager
