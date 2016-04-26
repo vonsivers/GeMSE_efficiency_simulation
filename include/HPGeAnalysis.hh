@@ -21,10 +21,11 @@ public:
     void AddSigRegion(double SigRegion) { fwidth_sig.push_back(SigRegion); };
     void AddBkgRegion(double BkgRegion) { fwidth_bkg.push_back(BkgRegion); };
     
-    int GetNLines() { return fnlines; };
-    double GetEfficiency(int i) { return fefficiency[i]; };
-    double GetEfficiency_err(int i) { return fefficiency_err[i]; };
-    double GetEffBR(int i) { return feffBR[i]; };
+    G4int GetNLines() { return fnlines; };
+    G4double GetEnergy(G4int i) { return fenergy[i]; };
+    G4double GetEfficiency(G4int i) { return fefficiency[i]; };
+    G4double GetEfficiency_err(G4int i) { return fefficiency_err[i]; };
+    G4double GetEffBR(G4int i) { return feffBR[i]; };
 
     TH1D* GetHisto() { return fhTotEdep; };
 	
@@ -41,8 +42,8 @@ private:
     std::vector<double> feffBR;
     
     TH1D* fhTotEdep;
-    int fnlines;
-    int fNEvents;
+    G4int fnlines;
+    G4int fNEvents;
     
 };
 
