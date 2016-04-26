@@ -132,7 +132,7 @@ int main(int argc, char** argv)//
     //------------- plot efficiency curve -------------------
     TCanvas* c1 = new TCanvas("c1");
     tree->Draw("efficiency:energy","");
-    c1->SaveAs(OutputFile+".pdf");
+    c1->SaveAs("simulated_efficiencies.pdf");
 	
     
     //-------------------------------------------------------
