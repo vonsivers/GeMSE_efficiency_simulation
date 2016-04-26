@@ -42,7 +42,7 @@ int main(int argc, char** argv)//
     bool Macro = false;
     G4String MacroFilename;
     G4String GeometryFilename = "worldVolume.txt";
-    G4String OutputFolder = "results";
+    G4String OutputFile = "simulated_efficiencies.root";
     
     while((c = getopt(argc,argv,"m:o:g:")) != -1)
     {
@@ -58,12 +58,16 @@ int main(int argc, char** argv)//
                 break;
                 
             case 'o':
-                OutputFolder = optarg;
+                OutputFile = optarg;
                 break;
                 
         }
     }
-
+    
+    // create output file
+    TFile* file = new TFile(OutputFile,"recreate");
+    TTree* tree = new TTree("tree","tree");
+    
     // Run manager
     //
     G4RunManager* runManager = new G4RunManager;
@@ -83,14 +87,11 @@ int main(int argc, char** argv)//
     
     // UserAction classes
     //
-    HPGeRunAction* run_action = new HPGeRunAction(OutputFolder);
+    HPGeRunAction* run_action = new HPGeRunAction(tree);
     runManager->SetUserAction(run_action);
     //
     HPGePrimaryGeneratorAction* gen_action = new HPGePrimaryGeneratorAction;
     runManager->SetUserAction(gen_action);
-    
-    G4UserTrackingAction* track_action = new HPGeTrackingAction;
-    runManager->SetUserAction(track_action);
     
     // Initialize G4 kernel
     //
@@ -124,8 +125,17 @@ int main(int argc, char** argv)//
 	}
 		
 	
-	//-------------------------------------
+    
+    //------------- plot efficiency curve -------------------
+    TCanvas* c1 = new TCanvas("c1");
+    tree->Draw("efficiency:energy","");
+    c1->SaveAs(OutputFile+".pdf");
 	
+    
+    //-------------------------------------------------------
+    
+    tree->Write();
+    file->Close();
 
 	
   // Job termination

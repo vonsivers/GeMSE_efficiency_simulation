@@ -3,15 +3,17 @@
 
 #include <TH1D.h>
 
-class HPGeAnalysis : public HPGeAnalysis
+class HPGeAnalysis
 {
 
 public:
     HPGeAnalysis();
-    ~HPGeAnaylsis();
+    ~HPGeAnalysis();
 
 public:
     void CalcEfficiencies();
+    
+    void SetNEvents(int NEvents) { fNEvents = NEvents; };
     
     void AddEnergy(double energy) { fenergy.push_back(energy); };
     void AddG4BR(double G4BR) { fG4BR.push_back(G4BR); };
@@ -22,6 +24,8 @@ public:
     int GetNLines() { return fnlines; };
     double GetEfficiency(int i) { return fefficiency[i]; };
     double GetEfficiency_err(int i) { return fefficiency_err[i]; };
+    double GetEffBR(int i) { return feffBR[i]; };
+
     TH1D* GetHisto() { return fhTotEdep; };
 	
   
@@ -34,9 +38,11 @@ private:
     
     std::vector<double> fefficiency;
     std::vector<double> fefficiency_err;
+    std::vector<double> feffBR;
     
     TH1D* fhTotEdep;
     int fnlines;
+    int fNEvents;
     
 };
 

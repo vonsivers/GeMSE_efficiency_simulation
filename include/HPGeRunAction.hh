@@ -37,12 +37,10 @@
 #include "G4UserRunAction.hh"
 #include "G4ThreeVector.hh"
 
+#include "HPGeAnalysis.hh"
+
 #include "TTree.h"
 
-#include <vector>
-#include <string>
-
-using std::string;
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -76,6 +76,9 @@ void HPGeRunAction::BeginOfRunAction(const G4Run* aRun)
     
     NEvents = aRun->GetNumberOfEventToBeProcessed();
     
+    // set Nb of events
+    fRunAnalysis->SetNEvents(NEvents);
+    
     G4cout << "### Run " << RunID << " started with " << NEvents << " events." << G4endl;
     timer->Start();
     
@@ -92,13 +95,17 @@ void HPGeRunAction::EndOfRunAction(const G4Run* aRun)
     fRunAnalysis->CalcEfficiencies();
     
     // fill ROOT Tree
-    double energy, efficiency;
+    double energy, efficiency, efficiency_err, eff_BR;
     ftree->Branch("energy",&energy);
-    ftree->Branch("eff_BR",&efficiency);
+    ftree->Branch("efficiency",&efficiency);
+    ftree->Branch("efficiency_err",&efficiency_err);
+    ftree->Branch("eff_BR",&eff_BR);
     int nlines = fRunAnalysis->GetNLines();
     for (int i=0; i<nlines; ++i) {
         energy = fRunAnalysis->GetEnergy(i);
         efficiency = fRunAnalysis->GetEfficiency(i);
+        efficiency_err = fRunAnalysis->GetEfficiency_err(i);
+        eff_BR = fRunAnalysis->GetEffBR(i);
 
         ftree->Fill();
     }
