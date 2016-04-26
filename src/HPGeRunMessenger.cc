@@ -75,11 +75,11 @@ void HPGeRunMessenger::SetNewValue(G4UIcommand* command,
                                                G4String newValues)
 { 
     if (command == selectActionCmd) {
-        fRunAnalysis->AddEnergy(energyCmd->GetNewdoubleValue(newValues));
-        fRunAnalysis->AddG4BR(G4BRCmd->GetNewdoubleValue(newValues));
-        fRunAnalysis->AddNuDatBR(NuDatBRCmd->GetNewdoubleValue(newValues));
-        fRunAnalysis->AddSigRegion(SigRegionCmd->GetNewdoubleValue(newValues));
-        fRunAnalysis->AddBkgRegion(BkgRegionCmd->GetNewdoubleValue(newValues));
+        fRunAnalysis->AddEnergy(energyCmd->GetNewDoubleValue(newValues));
+        fRunAnalysis->AddG4BR(G4BRCmd->GetNewDoubleValue(newValues));
+        fRunAnalysis->AddNuDatBR(NuDatBRCmd->GetNewDoubleValue(newValues));
+        fRunAnalysis->AddSigRegion(SigRegionCmd->GetNewDoubleValue(newValues));
+        fRunAnalysis->AddBkgRegion(BkgRegionCmd->GetNewDoubleValue(newValues));
     }
 }
 

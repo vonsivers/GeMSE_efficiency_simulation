@@ -51,9 +51,9 @@ class HPGeRunMessenger: public G4UImessenger
     
   private:
     
-    //HPGeAnalysis* RunAnalysis = new HPGeAnalysis();
-    
-    //HPGeRunAction* Action;
+    HPGeAnalysis* fRunAnalysis = new HPGeAnalysis();
+        
+    G4UIdirectory* runDirectory;
     
     G4UIcmdWithADouble* energyCmd;
     G4UIcmdWithADouble* G4BRCmd;
