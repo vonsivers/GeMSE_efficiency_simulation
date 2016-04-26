@@ -64,7 +64,7 @@ HPGeRunMessenger::~HPGeRunMessenger()
 {
     delete energyCmd;
     delete G4BRCmd;
-    delete NuDatCmd;
+    delete NuDatBRCmd;
     delete SigRegionCmd;
     delete BkgRegionCmd;
 }
@@ -74,11 +74,19 @@ HPGeRunMessenger::~HPGeRunMessenger()
 void HPGeRunMessenger::SetNewValue(G4UIcommand* command,
                                                G4String newValues)
 { 
-    if (command == selectActionCmd) {
+    if (command == energyCmd) {
         fRunAnalysis->AddEnergy(energyCmd->GetNewDoubleValue(newValues));
+    }
+    else if (command == G4BRCmd) {
         fRunAnalysis->AddG4BR(G4BRCmd->GetNewDoubleValue(newValues));
+    }
+    else if (command == NuDatBRCmd) {
         fRunAnalysis->AddNuDatBR(NuDatBRCmd->GetNewDoubleValue(newValues));
+    }
+    else if (command == SigRegionCmd) {
         fRunAnalysis->AddSigRegion(SigRegionCmd->GetNewDoubleValue(newValues));
+    }
+    else if (command == BkgRegionCmd) {
         fRunAnalysis->AddBkgRegion(BkgRegionCmd->GetNewDoubleValue(newValues));
     }
 }
