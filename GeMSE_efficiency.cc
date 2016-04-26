@@ -137,6 +137,7 @@ int main(int argc, char** argv)//
     
     //-------------------------------------------------------
     
+    file->cd();
     tree->Write();
     file->Close();
 

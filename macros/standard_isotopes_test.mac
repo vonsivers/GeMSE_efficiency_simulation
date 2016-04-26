@@ -2,9 +2,6 @@
 #efficiency simulation for GeMSE
 ####################################################
 
-#write primaries to root file
-/writePrimaries false
-
 #z-position of end cap = 3.95cm
 #z-position of center of sample cavity = 7.94cm
 
