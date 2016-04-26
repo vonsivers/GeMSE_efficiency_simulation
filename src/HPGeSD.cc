@@ -89,7 +89,7 @@ void HPGeSD::EndOfEvent(G4HCofThisEvent* HCE)
 	// fill histogram
 	if (totalEdep>0) {
 		
-		fhTotEdep->Fill();
+		fhTotEdep->Fill(totalEdep);
 	}
     
     G4int EventID = G4EventManager::GetEventManager()->GetConstCurrentEvent()->GetEventID();
