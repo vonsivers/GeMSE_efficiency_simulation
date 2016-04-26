@@ -63,7 +63,7 @@ HPGeRunAction::HPGeRunAction(TTree* tree)
 HPGeRunAction::~HPGeRunAction()
 {
     delete timer;
-    delete fRunAnalysis;
+    //delete fRunAnalysis;
     delete runMessenger;
 }
 

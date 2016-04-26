@@ -36,7 +36,7 @@
 /gammaline/BkgRegion 10.
 
 /gps/energy 1001 keV
-/run/beamOn 100000
+/run/beamOn 10000
 
 #Th234 (gammas)
 /gammaline/energy 63.3 
@@ -46,7 +46,7 @@
 /gammaline/BkgRegion 10.
 
 /gps/energy 63.3 keV
-/run/beamOn 100000
+/run/beamOn 10000
 
 /gammaline/energy 92.6 
 /gammaline/G4BR 1 
@@ -55,7 +55,7 @@
 /gammaline/BkgRegion 10.
 
 /gps/energy 92.6 keV
-/run/beamOn 100000
+/run/beamOn 10000
 
 ##############################
 #switch to full decays
@@ -78,4 +78,4 @@
 
 /gps/ion 82 214 0 0
 /grdm/nucleusLimits 214 214 82 82 
-/run/beamOn 100000
+/run/beamOn 10000
