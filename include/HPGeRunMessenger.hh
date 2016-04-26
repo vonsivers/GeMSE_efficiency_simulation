@@ -44,16 +44,16 @@ class G4UIcmdWithADouble;
 class HPGeRunMessenger: public G4UImessenger
 {
   public:
-    HPGeRunMessenger(HPGeRunAction*);
+    HPGeRunMessenger(HPGeAnalysis*);
    ~HPGeRunMessenger();
     
     void SetNewValue(G4UIcommand*, G4String);
     
   private:
     
-    HPGeAnalysis* RunAnalysis = new HPGeAnalysis();
+    //HPGeAnalysis* RunAnalysis = new HPGeAnalysis();
     
-    HPGeRunAction* Action;
+    //HPGeRunAction* Action;
     
     G4UIcmdWithADouble* energyCmd;
     G4UIcmdWithADouble* G4BRCmd;
