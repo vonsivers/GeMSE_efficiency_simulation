@@ -17,7 +17,8 @@
 #include <TFile.h>
 #include <TTree.h>
 #include <TCanvas.h>
-#include "TSystem.h"
+#include <TSystem.h>
+#include <TString.h>
 
 #include "G4VisExecutive.hh"
 
@@ -149,7 +150,8 @@ int main(int argc, char** argv)//
     //------------- plot efficiency curve -------------------
     TCanvas* c1 = new TCanvas("c1");
     tree->Draw("efficiency:energy","*");
-    c1->SaveAs(OutputFolder+"/simulated_efficiencies.pdf");
+    TString filename = OutputFolder+"/simulated_efficiencies.pdf";
+    c1->SaveAs(filename);
 	
     
     //-------------------------------------------------------
