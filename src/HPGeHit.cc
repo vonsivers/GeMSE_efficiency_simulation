@@ -22,23 +22,12 @@ HPGeHit::HPGeHit(const HPGeHit& right)
   : G4VHit()
 {
 	edep			= right.edep;
-	pos				= right.pos;
-	particleID		= right.particleID;
-	trackID			= right.trackID;
-	particleEnergy	= right.particleEnergy;
-	time			= right.time;
-	
  }
 
 
 const HPGeHit& HPGeHit::operator=(const HPGeHit& right)
 {
 	edep			= right.edep;
-	pos				= right.pos;
-	particleID		= right.particleID;
-	trackID			= right.trackID;
-	particleEnergy  = right.particleEnergy;
-	time			= right.time;
 
   return *this;
 }
