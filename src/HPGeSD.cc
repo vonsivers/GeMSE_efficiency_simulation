@@ -91,6 +91,8 @@ void HPGeSD::EndOfEvent(G4HCofThisEvent* HCE)
 		
 		fhTotEdep->Fill();
 	}
+    
+    G4int EventID = G4EventManager::GetEventManager()->GetConstCurrentEvent()->GetEventID();
 	 
 	if (EventID%10000==0) {
 		G4cout << "\r" << "Simulating Event Nr.: " << EventID << std::flush;

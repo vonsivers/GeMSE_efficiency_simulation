@@ -29,7 +29,7 @@ class HPGeSD : public G4VSensitiveDetector
   private:
 	HPGeHitsCollection* HitsCollection;    
     int HCID;
-    TH1D* fTotEdep;
+    TH1D* fhTotEdep;
 
 	
 };
