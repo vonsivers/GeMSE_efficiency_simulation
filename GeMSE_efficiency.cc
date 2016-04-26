@@ -79,7 +79,7 @@ int main(int argc, char** argv)//
     }
     
     // create output file
-    TFile* file = new TFile(fOutputFolder+"/simulated_efficiencies.root","Create");
+    TFile* file = new TFile(OutputFolder+"/simulated_efficiencies.root","Create");
     
     if (file->IsZombie()) {
         G4cout << "###### ERROR: could not create file 'simulated_efficiencies.root'" << G4endl;
@@ -148,8 +148,8 @@ int main(int argc, char** argv)//
     
     //------------- plot efficiency curve -------------------
     TCanvas* c1 = new TCanvas("c1");
-    tree->Draw("efficiency:energy","");
-    c1->SaveAs("simulated_efficiencies.pdf");
+    tree->Draw("efficiency:energy","*");
+    c1->SaveAs(OutputFolder+"/simulated_efficiencies.pdf");
 	
     
     //-------------------------------------------------------
