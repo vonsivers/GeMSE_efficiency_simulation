@@ -9,11 +9,14 @@
 #include "HPGePhysicsList.hh"
 #include "HPGePrimaryGeneratorAction.hh"
 #include "HPGeRunAction.hh"
-#include "HPGeTrackingAction.hh"
 
 #include "Randomize.hh"
 #include <time.h>
 #include <getopt.h>
+
+#include <TFile.h>
+#include <TTree.h>
+#include <TCanvas.h>
 
 #include "G4VisExecutive.hh"
 
