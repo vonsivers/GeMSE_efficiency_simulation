@@ -83,7 +83,6 @@ void HPGeAnalysis::CalcEfficiencies() {
 
         
     }
-}
 
 // --------------------------------
 // clear all data
@@ -101,7 +100,7 @@ void HPGeAnalysis::Clear() {
 	feffBR.clear();
 }
     
-
+}
 
 
 

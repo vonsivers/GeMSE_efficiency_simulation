@@ -2,9 +2,6 @@
 #efficiency simulation for GeMSE
 ####################################################
 
-#write primaries to root file
-/writePrimaries false
-
 #z-position of end cap = 3.95cm
 #z-position of center of sample cavity = 7.94cm
 
@@ -32,22 +29,33 @@
 /gps/ang/type iso
 
 #Pa234m (gammas)
-/file simulation_1001.0keV.root
-/gps/energy 1001 keV
-/run/beamOn 1000000
+/gammaline/energy 1001.0 
+/gammaline/G4BR 1 
+/gammaline/NuDatBR 0.00842 
+/gammaline/SigRegion 0.4 
+/gammaline/BkgRegion 10.
 
-#U235 (gammas)
-/file simulation_185.7keV.root
-/gps/energy 185.7 keV
-/run/beamOn 1000000
+/gps/energy 1001 keV
+/run/beamOn 10000000
 
 #Th234 (gammas)
-/file simulation_63.3keV.root
+/gammaline/energy 63.3 
+/gammaline/G4BR 1 
+/gammaline/NuDatBR 0.037 
+/gammaline/SigRegion 0.4 
+/gammaline/BkgRegion 10.
+
 /gps/energy 63.3 keV
-/run/beamOn 1000000
-/file simulation_92.6keV.root
+/run/beamOn 10000000
+
+/gammaline/energy 92.6 
+/gammaline/G4BR 1 
+/gammaline/NuDatBR 0.0423 
+/gammaline/SigRegion 1.2 
+/gammaline/BkgRegion 10.
+
 /gps/energy 92.6 keV
-/run/beamOn 1000000
+/run/beamOn 10000000
 
 ##############################
 #switch to full decays
@@ -56,79 +64,197 @@
 /gps/particle ion
 
 #Pb214
-/file simulation_Pb214.root
+/gammaline/energy 295.2 
+/gammaline/G4BR 0.18746 
+/gammaline/NuDatBR 0.1842
+/gammaline/SigRegion 0.4 
+/gammaline/BkgRegion 10.
+
+/gammaline/energy 351.9 
+/gammaline/G4BR 0.3688 
+/gammaline/NuDatBR 0.3560
+/gammaline/SigRegion 0.4 
+/gammaline/BkgRegion 10.
+
 /gps/ion 82 214 0 0
 /grdm/nucleusLimits 214 214 82 82 
 /run/beamOn 10000000
 
 #Bi214
-/file simulation_Bi214.root
+/gammaline/energy 609.3	
+/gammaline/G4BR 0.46075	
+/gammaline/NuDatBR 0.4549	
+/gammaline/SigRegion 0.4	
+/gammaline/BkgRegion 10.
+
+/gammaline/energy 1120.3
+/gammaline/G4BR 0.15268	
+/gammaline/NuDatBR 0.1492	
+/gammaline/SigRegion 0.4	
+/gammaline/BkgRegion 10
+
+/gammaline/energy 1764.5
+/gammaline/G4BR 0.15344	
+/gammaline/NuDatBR 0.1530	
+/gammaline/SigRegion 0.4	
+/gammaline/BkgRegion 10
+
 /gps/ion 83 214 0 0
 /grdm/nucleusLimits 214 214 83 83 
 /run/beamOn 10000000
 
 #Ac228
-/file simulation_Ac228.root
+/gammaline/energy 911.2
+/gammaline/G4BR 0.2475	
+/gammaline/NuDatBR 0.258	
+/gammaline/SigRegion 0.4	
+/gammaline/BkgRegion 10
+
+/gammaline/energy 969.0
+/gammaline/G4BR 0.15151	
+/gammaline/NuDatBR 0.158	
+/gammaline/SigRegion 0.4	
+/gammaline/BkgRegion 10
+
 /gps/ion 89 228 0 0
 /grdm/nucleusLimits 228 228 89 89 
 /run/beamOn 10000000
 
 #Pb212
-/file simulation_Pb212.root
+/gammaline/energy 238.6
+/gammaline/G4BR 0.4299	
+/gammaline/NuDatBR 0.436	
+/gammaline/SigRegion 0.4	
+/gammaline/BkgRegion 10
+
 /gps/ion 82 212 0 0
 /grdm/nucleusLimits 212 212 82 82 
 /run/beamOn 10000000
 
 #Bi212
-/file simulation_Bi212.root
+/gammaline/energy 727.3
+/gammaline/G4BR 0.06556	
+/gammaline/NuDatBR 0.0667	
+/gammaline/SigRegion 0.4	
+/gammaline/BkgRegion 10
+
 /gps/ion 83 212 0 0
 /grdm/nucleusLimits 212 212 83 83 
 /run/beamOn 10000000
 
 #Tl208
-/file simulation_Tl208.root
+/gammaline/energy 583.2
+/gammaline/G4BR 0.8494	
+/gammaline/NuDatBR 0.3055	
+/gammaline/SigRegion 0.4	
+/gammaline/BkgRegion 10
+
+/gammaline/energy 2614.5
+/gammaline/G4BR 0.9985	
+/gammaline/NuDatBR 0.3585	
+/gammaline/SigRegion 0.4	
+/gammaline/BkgRegion 10
+
 /gps/ion 81 208 0 0
 /grdm/nucleusLimits 208 208 81 81 
 /run/beamOn 10000000
 
 #Cs137
-/file simulation_Cs137.root
+/gammaline/energy 661.7
+/gammaline/G4BR 0.84796	
+/gammaline/NuDatBR 0.8510	
+/gammaline/SigRegion 0.4	
+/gammaline/BkgRegion 10
+
 /gps/ion 55 137 0 0
 /grdm/nucleusLimits 137 137 55 55 
 /run/beamOn 10000000
 
 #Co60
-/file simulation_Co60.root
+/gammaline/energy 1173.2
+/gammaline/G4BR 0.99863
+/gammaline/NuDatBR 0.9985	
+/gammaline/SigRegion 0.4	
+/gammaline/BkgRegion 10
+
+/gammaline/energy 1332.5
+/gammaline/G4BR 0.99978
+/gammaline/NuDatBR 0.999826	
+/gammaline/SigRegion 0.4	
+/gammaline/BkgRegion 10
+
 /gps/ion 27 60 0 0
 /grdm/nucleusLimits 60 60 27 27 
 /run/beamOn 10000000
 
 #K40
-/file simulation_K40.root
+/gammaline/energy 1460.8
+/gammaline/G4BR 0.10397
+/gammaline/NuDatBR 0.1066	
+/gammaline/SigRegion 0.4
+/gammaline/BkgRegion 10
+
 /gps/ion 19 40 0 0
 /grdm/nucleusLimits 40 40 19 19 
 /run/beamOn 10000000
 
 #Mn54
-/file simulation_Mn54.root
+/gammaline/energy 834.8
+/gammaline/G4BR 0.99975
+/gammaline/NuDatBR 0.999760	
+/gammaline/SigRegion 0.4
+/gammaline/BkgRegion 10
+
 /gps/ion 25 54 0 0
 /grdm/nucleusLimits 54 54 25 25 
 /run/beamOn 10000000
 
 #Ti44
-/file simulation_Ti44.root
+/gammaline/energy 67.9
+/gammaline/G4BR 0.91996
+/gammaline/NuDatBR 0.930
+/gammaline/SigRegion 0.4
+/gammaline/BkgRegion 10
+
+/gammaline/energy 78.3
+/gammaline/G4BR 0.9667
+/gammaline/NuDatBR 0.964
+/gammaline/SigRegion 0.4
+/gammaline/BkgRegion 10
+
 /gps/ion 22 44 0 0
 /grdm/nucleusLimits 44 44 22 22 
 /run/beamOn 10000000
 
 #Na22
-/file simulation_Na22.root
+/gammaline/energy 1274.5
+/gammaline/G4BR 0.9994
+/gammaline/NuDatBR 0.99940
+/gammaline/SigRegion 0.4
+/gammaline/BkgRegion 10
+
 /gps/ion 11 22 0 0
 /grdm/nucleusLimits 22 22 11 11 
 /run/beamOn 10000000
 
 #Al26
-/file simulation_Al26.root
+/gammaline/energy 1808.7
+/gammaline/G4BR 0.97856
+/gammaline/NuDatBR 0.9976
+/gammaline/SigRegion 0.4
+/gammaline/BkgRegion 10
+
 /gps/ion 13 26 0 0
 /grdm/nucleusLimits 26 26 13 13 
+/run/beamOn 10000000
+
+#Sc44
+/gammaline/energy 1157.0
+/gammaline/G4BR 0.998794
+/gammaline/NuDatBR 0.999
+/gammaline/SigRegion 0.4
+/gammaline/BkgRegion 10
+
+/gps/ion 21 44 0 0
+/grdm/nucleusLimits 44 44 21 21 
 /run/beamOn 10000000

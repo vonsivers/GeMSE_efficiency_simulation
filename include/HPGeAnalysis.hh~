@@ -12,7 +12,6 @@ public:
 
 public:
     void CalcEfficiencies();
-    void Clear();
     
     void SetNEvents(int NEvents) { fNEvents = NEvents; }
     
