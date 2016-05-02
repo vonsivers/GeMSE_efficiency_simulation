@@ -8,10 +8,12 @@ GeMSE_efficiency -m <macrofile.mac> -g <geometry_file.txt> -o <results_folder>
 ```
 
 ## Output
-* simulation_isotope_name/line_energy.root
-	* TTree „GeHits“: Tree with information for every hit in the detector
-		* TBranch „TotEdep“: Total deposited energy in the detector per event
-		* TBranch …
+* simulated_efficiencies.root
+	* TTree "tree": Tree with information about detection efficiency and branching ratio (emission probability) for every gamma line
+		* TBranch "energy": energy of gamma line
+		* TBranch "efficiency": detection efficiency
+        * TBranch "efficiency_err": statistical uncertainty of detection efficiency
+        * TBranch "eff_BR": product of detection efficiency and branching ratio
 
 ## macrofile.mac
 * contains the information which isotopes or gamma lines are simulated
@@ -25,4 +27,3 @@ GeMSE_efficiency -m <macrofile.mac> -g <geometry_file.txt> -o <results_folder>
 
 ## results_folder
 * folder where result files are written. 
-* **WARNING: files with same names will be overwritten!**

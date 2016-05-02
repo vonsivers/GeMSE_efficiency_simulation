@@ -23,89 +23,101 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
+//
+// $Id: HPGeRunAction.cc,v 1.10 2006/06/29 17:54:31 gunter Exp $
+// GEANT4 tag $Name: geant4-09-01-patch-02 $
+// 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#include "HPGePhysicsList.hh"
+// Make this appear first!
+#include "G4Timer.hh"
 
-#include "HPGePhysListParticles.hh"
-#include "G4EmLivermorePhysics.hh"
-#include "G4EmStandardPhysics.hh"
+#include "HPGeRunAction.hh"
+#include "HPGeAnalysis.hh"
+#include "HPGeRunMessenger.hh"
 
-#include "G4RegionStore.hh"
-#include "G4Region.hh"
-#include "G4ProductionCuts.hh"
-#include "G4ProcessManager.hh"
-#include "G4ParticleTypes.hh"
-#include "G4ParticleTable.hh"
+#include "G4Run.hh"
+#include "G4RunManager.hh"
 
-#include "G4Gamma.hh"
-#include "G4Electron.hh"
-#include "G4Positron.hh"
+#include "TTree.h"
 
-#include "G4UnitsTable.hh"
-
-
-#include "G4RadioactiveDecayPhysics.hh"
-#include "G4DecayPhysics.hh"
+//#include <time.h>
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-HPGePhysicsList::HPGePhysicsList() : G4VModularPhysicsList()
+HPGeRunAction::HPGeRunAction(TTree* tree)
 {
+    ftree = tree;
+    timer = new G4Timer;
+    
+    // create run analysis
+    fRunAnalysis = new HPGeAnalysis();
+    
+    //create a messenger for this class
+    runMessenger = new HPGeRunMessenger(fRunAnalysis);
+}
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+HPGeRunAction::~HPGeRunAction()
+{
+    delete timer;
+    //delete fRunAnalysis;
+    delete runMessenger;
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void HPGeRunAction::BeginOfRunAction(const G4Run* aRun)
+{
+    
+    G4int RunID = aRun->GetRunID();
+    
+    G4int NEvents = aRun->GetNumberOfEventToBeProcessed();
+    
+    // set Nb of events
+    fRunAnalysis->SetNEvents(NEvents);
+    
+    G4cout << "### Run " << RunID << " started with " << NEvents << " events." << G4endl;
+    timer->Start();
+    
+    
 	
-	//default physics
-	particleList = new G4DecayPhysics();
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void HPGeRunAction::EndOfRunAction(const G4Run* aRun)
+{
+    
+    // calculate efficiencies
+    fRunAnalysis->CalcEfficiencies();
+    
+    // fill ROOT Tree
+    G4double energy, efficiency, efficiency_err, eff_BR;
+    ftree->Branch("energy",&energy);
+    ftree->Branch("efficiency",&efficiency);
+    ftree->Branch("efficiency_err",&efficiency_err);
+    ftree->Branch("eff_BR",&eff_BR);
+    int nlines = fRunAnalysis->GetNLines();
+    for (int i=0; i<nlines; ++i) {
+        energy = fRunAnalysis->GetEnergy(i);
+        efficiency = fRunAnalysis->GetEfficiency(i);
+        efficiency_err = fRunAnalysis->GetEfficiency_err(i);
+        eff_BR = fRunAnalysis->GetEffBR(i);
+
+        ftree->Fill();
+    }
+    
+	timer->Stop();
 	
-	//default physics
-	raddecayList = new G4RadioactiveDecayPhysics();
+	G4cout << "\n" << "### Finished ###" << G4endl;
+	G4cout << "Runtime: " << *timer << G4endl;
 	
-	// EM physics
-	//emPhysicsList = new G4EmLivermorePhysics();
-    //emPhysicsList = new G4EmStandardPhysics();
 	
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-HPGePhysicsList::~HPGePhysicsList()
-{
-	delete raddecayList;
-	//delete emPhysicsList;
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void HPGePhysicsList::ConstructParticle()
-{
-	particleList->ConstructParticle();
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void HPGePhysicsList::ConstructProcess()
-{
-	AddTransportation();
-	// em
-	//emPhysicsList->ConstructProcess();
-	// decays
-	particleList->ConstructProcess();
-	raddecayList->ConstructProcess();
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void HPGePhysicsList::SetCuts()
-{
-  //  " G4VUserPhysicsList::SetCutsWithDefault" method sets 
-  //   the default cut value for all particle types
-  // 
-  SetCutsWithDefault();
-  
-}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

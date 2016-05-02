@@ -31,34 +31,64 @@
 
 #include "HPGeRunMessenger.hh"
 #include "HPGeRunAction.hh"
-#include "G4UIcmdWithAString.hh"
+
+#include "G4UIcmdWithADouble.hh"
+#include "G4UIdirectory.hh"
 
 #include "G4Run.hh"
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-HPGeRunMessenger::HPGeRunMessenger(HPGeRunAction* aRun)
-:Action(aRun)
+HPGeRunMessenger::HPGeRunMessenger(HPGeAnalysis* RunAnalysis)
+:fRunAnalysis(RunAnalysis)
 {
-    selectActionCmd = new G4UIcmdWithAString("file",this);
-    selectActionCmd->SetDefaultValue("default");
+    runDirectory = new G4UIdirectory("/gammaline/");
+
+    energyCmd = new G4UIcmdWithADouble("/gammaline/energy",this);
+    G4BRCmd = new G4UIcmdWithADouble("/gammaline/G4BR",this);
+    NuDatBRCmd = new G4UIcmdWithADouble("/gammaline/NuDatBR",this);
+    SigRegionCmd = new G4UIcmdWithADouble("/gammaline/SigRegion",this);
+    BkgRegionCmd = new G4UIcmdWithADouble("/gammaline/BkgRegion",this);
+    energyCmd->SetDefaultValue(0.);
+    G4BRCmd->SetDefaultValue(1.);
+    NuDatBRCmd->SetDefaultValue(1.);
+    SigRegionCmd->SetDefaultValue(0.4);
+    BkgRegionCmd->SetDefaultValue(10.);
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 HPGeRunMessenger::~HPGeRunMessenger()
 {
-  delete selectActionCmd;
+    delete energyCmd;
+    delete G4BRCmd;
+    delete NuDatBRCmd;
+    delete SigRegionCmd;
+    delete BkgRegionCmd;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void HPGeRunMessenger::SetNewValue(G4UIcommand* command,
-                                               G4String newValue)
+                                               G4String newValues)
 { 
-  if (command == selectActionCmd)
-    Action->SelectAction(newValue);
+    if (command == energyCmd) {
+        fRunAnalysis->AddEnergy(energyCmd->GetNewDoubleValue(newValues));
+    }
+    else if (command == G4BRCmd) {
+        fRunAnalysis->AddG4BR(G4BRCmd->GetNewDoubleValue(newValues));
+    }
+    else if (command == NuDatBRCmd) {
+        fRunAnalysis->AddNuDatBR(NuDatBRCmd->GetNewDoubleValue(newValues));
+    }
+    else if (command == SigRegionCmd) {
+        fRunAnalysis->AddSigRegion(SigRegionCmd->GetNewDoubleValue(newValues));
+    }
+    else if (command == BkgRegionCmd) {
+        fRunAnalysis->AddBkgRegion(BkgRegionCmd->GetNewDoubleValue(newValues));
+    }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

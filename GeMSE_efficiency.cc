@@ -9,11 +9,16 @@
 #include "HPGePhysicsList.hh"
 #include "HPGePrimaryGeneratorAction.hh"
 #include "HPGeRunAction.hh"
-#include "HPGeTrackingAction.hh"
 
 #include "Randomize.hh"
 #include <time.h>
 #include <getopt.h>
+
+#include <TFile.h>
+#include <TTree.h>
+#include <TCanvas.h>
+#include <TSystem.h>
+#include <TString.h>
 
 #include "G4VisExecutive.hh"
 
@@ -61,9 +66,30 @@ int main(int argc, char** argv)//
                 OutputFolder = optarg;
                 break;
                 
-                   }
+        }
+    }
+    
+    // try to open results directory
+    if (!gSystem->OpenDirectory(OutputFolder)) {
+        
+        // if directory does not exist make one
+        if (gSystem->MakeDirectory(OutputFolder)==-1) {
+            std::cout << "###### ERROR: could not create directory " << OutputFolder << std::endl;
+            return 0;
+        }
+    }
+    
+    // create output file
+    TString outputfile = OutputFolder+"/simulated_efficiencies.root";
+    TFile* file = new TFile(outputfile,"Create");
+    
+    if (file->IsZombie()) {
+        G4cout << "###### ERROR: could not create file 'simulated_efficiencies.root'" << G4endl;
+        return 0;
     }
 
+    TTree* tree = new TTree("tree","tree");
+    
     // Run manager
     //
     G4RunManager* runManager = new G4RunManager;
@@ -83,14 +109,11 @@ int main(int argc, char** argv)//
     
     // UserAction classes
     //
-    HPGeRunAction* run_action = new HPGeRunAction(OutputFolder);
+    HPGeRunAction* run_action = new HPGeRunAction(tree);
     runManager->SetUserAction(run_action);
     //
     HPGePrimaryGeneratorAction* gen_action = new HPGePrimaryGeneratorAction;
     runManager->SetUserAction(gen_action);
-    
-    G4UserTrackingAction* track_action = new HPGeTrackingAction;
-    runManager->SetUserAction(track_action);
     
     // Initialize G4 kernel
     //
@@ -124,8 +147,19 @@ int main(int argc, char** argv)//
 	}
 		
 	
-	//-------------------------------------
+    
+    //------------- plot efficiency curve -------------------
+    TCanvas* c1 = new TCanvas("c1");
+    tree->Draw("efficiency:energy","","*");
+    TString graphfile = OutputFolder+"/simulated_efficiencies.pdf";
+    c1->SaveAs(graphfile);
 	
+    
+    //-------------------------------------------------------
+    
+    file->cd();
+    tree->Write();
+    file->Close();
 
 	
   // Job termination

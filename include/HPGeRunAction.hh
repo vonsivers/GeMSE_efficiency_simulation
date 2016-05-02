@@ -37,13 +37,10 @@
 #include "G4UserRunAction.hh"
 #include "G4ThreeVector.hh"
 
+#include "HPGeAnalysis.hh"
+
 #include "TTree.h"
-#include "TFile.h"
 
-#include <vector>
-#include <string>
-
-using std::string;
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -55,64 +52,22 @@ class HPGeRunMessenger;
 class HPGeRunAction : public G4UserRunAction
 {
   public:
-    HPGeRunAction(G4String Outputfolder);
+    HPGeRunAction(TTree* tree);
    ~HPGeRunAction();
 
   public:
     void BeginOfRunAction(const G4Run* aRun);
     void EndOfRunAction(const G4Run* aRun);
-
-	TTree* GetGeHitTree();
-	TTree* GetPrimariesTree();
-	
-	void AddDecay();
     
-    void SelectAction(G4String string)	{ selectedAction = string; };
-    G4String GetSelectedAction()			{ return selectedAction; };
+    HPGeAnalysis* GetRunAnalysis() { return fRunAnalysis; };
 
 
   private:
     G4Timer* timer;
-	
-	G4int NDecays;
-	G4int fNDecays;
 
-	G4int NEvents;
-	G4int HEventID;
-	G4int NHits;
-	G4double TotEdep;
-	
-	std::vector<double> Edep;
-	std::vector<double> HEkin;
-	std::vector<double> Time;
-	std::vector<double> xPos;
-	std::vector<double> yPos;
-	std::vector<double> zPos;
-	std::vector<int> HParticleID;
-	std::vector<int> HTrackID;
-
-	G4int PEventID;
-	G4int PTrackID;
-    G4int ParentID;
-    string* PParticleID;
-    string* Process;
-    G4double PEkin;
-	G4double xDir;
-	G4double yDir;
-	G4double zDir;
-	
-	TFile* ResultFile;
-	
-	TTree* GeHitTree;
-	TTree* PrimariesTree;
-	TTree* RunTree;
-	
-	TTree* fGeHitTree;
-	TTree* fPrimariesTree;
+	TTree* ftree;
     
-    G4String selectedAction;
-    G4String fOutputFolder;
-
+    HPGeAnalysis* fRunAnalysis;
     HPGeRunMessenger* runMessenger;
 };
 
