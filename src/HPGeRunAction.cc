@@ -58,6 +58,7 @@ HPGeRunAction::HPGeRunAction(TTree* tree)
     runMessenger = new HPGeRunMessenger(fRunAnalysis);
 }
 
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 HPGeRunAction::~HPGeRunAction()
@@ -90,28 +91,32 @@ void HPGeRunAction::BeginOfRunAction(const G4Run* aRun)
 
 void HPGeRunAction::EndOfRunAction(const G4Run* aRun)
 {
-    
-    // calculate efficiencies
-    fRunAnalysis->CalcEfficiencies();
-    
-    // fill ROOT Tree
-    G4double energy, efficiency, efficiency_err, eff_BR;
-    ftree->Branch("energy",&energy);
-    ftree->Branch("efficiency",&efficiency);
-    ftree->Branch("efficiency_err",&efficiency_err);
-    ftree->Branch("eff_BR",&eff_BR);
-    int nlines = fRunAnalysis->GetNLines();
-    for (int i=0; i<nlines; ++i) {
-        energy = fRunAnalysis->GetEnergy(i);
-        efficiency = fRunAnalysis->GetEfficiency(i);
-        efficiency_err = fRunAnalysis->GetEfficiency_err(i);
-        eff_BR = fRunAnalysis->GetEffBR(i);
-
-        ftree->Fill();
+    // if a tree is defined
+    if (ftree) {
+        
+        // calculate efficiencies
+        fRunAnalysis->CalcEfficiencies();
+        
+        // fill ROOT Tree
+        G4double energy, efficiency, efficiency_err, eff_BR;
+        ftree->Branch("energy",&energy);
+        ftree->Branch("efficiency",&efficiency);
+        ftree->Branch("efficiency_err",&efficiency_err);
+        ftree->Branch("eff_BR",&eff_BR);
+        int nlines = fRunAnalysis->GetNLines();
+        for (int i=0; i<nlines; ++i) {
+            energy = fRunAnalysis->GetEnergy(i);
+            efficiency = fRunAnalysis->GetEfficiency(i);
+            efficiency_err = fRunAnalysis->GetEfficiency_err(i);
+            eff_BR = fRunAnalysis->GetEffBR(i);
+            
+            ftree->Fill();
+        }
+        
+        // clear data
+        fRunAnalysis->Clear();
     }
-
-	// clear data
-	fRunAnalysis->Clear();
+    
     
 	timer->Stop();
 	

@@ -47,7 +47,7 @@ int main(int argc, char** argv)//
     bool Macro = false;
     G4String MacroFilename;
     G4String GeometryFilename = "worldVolume.txt";
-    G4String OutputFolder = "results";
+    G4String OutputFolder = "";
     
     while((c = getopt(argc,argv,"m:o:g:")) != -1)
     {
@@ -69,26 +69,39 @@ int main(int argc, char** argv)//
         }
     }
     
-    // try to open results directory
-    if (!gSystem->OpenDirectory(OutputFolder)) {
+    // initialize pointers
+    TFile* file = 0;
+    TTree* tree = 0;
+    
+    // check if output folder was specified
+    if (OutputFolder=="") {
+        std::cout << "###### WARNING: no folder specified, no output will be written " << std::endl;
+
+    }
+    else {
+    
+        // try to open results directory
+        if (!gSystem->OpenDirectory(OutputFolder)) {
+            
+            // if directory does not exist make one
+            if (gSystem->MakeDirectory(OutputFolder)==-1) {
+                std::cout << "###### ERROR: could not create directory " << OutputFolder << std::endl;
+                return 0;
+            }
+        }
         
-        // if directory does not exist make one
-        if (gSystem->MakeDirectory(OutputFolder)==-1) {
-            std::cout << "###### ERROR: could not create directory " << OutputFolder << std::endl;
+        // create output file
+        TString outputfile = OutputFolder+"/simulated_efficiencies.root";
+        file = new TFile(outputfile,"Create");
+        
+        if (file->IsZombie()) {
+            G4cout << "###### ERROR: could not create file 'simulated_efficiencies.root'" << G4endl;
             return 0;
         }
+        
+        tree = new TTree("tree","tree");
+        
     }
-    
-    // create output file
-    TString outputfile = OutputFolder+"/simulated_efficiencies.root";
-    TFile* file = new TFile(outputfile,"Create");
-    
-    if (file->IsZombie()) {
-        G4cout << "###### ERROR: could not create file 'simulated_efficiencies.root'" << G4endl;
-        return 0;
-    }
-
-    TTree* tree = new TTree("tree","tree");
     
     // Run manager
     //
@@ -147,19 +160,20 @@ int main(int argc, char** argv)//
 	}
 		
 	
-    
-    //------------- plot efficiency curve -------------------
-    TCanvas* c1 = new TCanvas("c1");
-    tree->Draw("efficiency:energy","","*");
-    TString graphfile = OutputFolder+"/simulated_efficiencies.pdf";
-    c1->SaveAs(graphfile);
-	
-    
-    //-------------------------------------------------------
-    
-    file->cd();
-    tree->Write();
-    file->Close();
+    if (OutputFolder!="") {
+        //------------- plot efficiency curve -------------------
+        TCanvas* c1 = new TCanvas("c1");
+        tree->Draw("efficiency:energy","","*");
+        TString graphfile = OutputFolder+"/simulated_efficiencies.pdf";
+        c1->SaveAs(graphfile);
+
+        
+        //-------------------------------------------------------
+        
+        file->cd();
+        tree->Write();
+        file->Close();
+    }
 
 	
   // Job termination
