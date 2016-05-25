@@ -48,8 +48,9 @@ int main(int argc, char** argv)//
     G4String MacroFilename;
     G4String GeometryFilename = "worldVolume.txt";
     G4String OutputFolder = "";
+    G4String OutputFile = "simulated_efficiencies.root";
     
-    while((c = getopt(argc,argv,"m:o:g:")) != -1)
+    while((c = getopt(argc,argv,"m:o:g:f:")) != -1)
     {
         switch(c)
         {
@@ -64,6 +65,10 @@ int main(int argc, char** argv)//
                 
             case 'o':
                 OutputFolder = optarg;
+                break;
+                
+            case 'f':
+                OutputFile = optarg;
                 break;
                 
         }
@@ -91,11 +96,11 @@ int main(int argc, char** argv)//
         }
         
         // create output file
-        TString outputfile = OutputFolder+"/simulated_efficiencies.root";
+        TString outputfile = OutputFolder+"/"+OutputFile;
         file = new TFile(outputfile,"Create");
         
         if (file->IsZombie()) {
-            G4cout << "###### ERROR: could not create file 'simulated_efficiencies.root'" << G4endl;
+            G4cout << "###### ERROR: could not create file " << outputfile << G4endl;
             return 0;
         }
         
@@ -164,7 +169,7 @@ int main(int argc, char** argv)//
         //------------- plot efficiency curve -------------------
         TCanvas* c1 = new TCanvas("c1");
         tree->Draw("efficiency:energy","","*");
-        TString graphfile = OutputFolder+"/simulated_efficiencies.pdf";
+        TString graphfile = outputfile+".pdf";
         c1->SaveAs(graphfile);
 
         
