@@ -19,19 +19,18 @@
 /gps/pos/confine sample
 
 ##############################
-#switch to full decays
+#simulate gammas only
 ##############################
-/gps/energy 0 keV
-/gps/particle ion
+/gps/particle gamma
+/gps/ang/type iso
 
-#Cs137
-/gammaline/energy 661.7
-/gammaline/G4BR 0.84796	
-/gammaline/NuDatBR 0.8510	
-/gammaline/SigRegion 0.4	
-/gammaline/BkgRegion 10
+#Pa234m (gammas)
+/gammaline/energy 1001.0 
+/gammaline/G4BR 1 
+/gammaline/NuDatBR 0.00842 
+/gammaline/SigRegion 0.4 
+/gammaline/BkgRegion 10.
 
-/gps/ion 55 137 0 0
-/grdm/nucleusLimits 137 137 55 55 
+/gps/energy 1001 keV
 /run/beamOn 10000000
 

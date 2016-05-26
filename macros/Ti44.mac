@@ -24,14 +24,19 @@
 /gps/energy 0 keV
 /gps/particle ion
 
-#Cs137
-/gammaline/energy 661.7
-/gammaline/G4BR 0.84796	
-/gammaline/NuDatBR 0.8510	
-/gammaline/SigRegion 0.4	
+#Ti44
+/gammaline/energy 67.9
+/gammaline/G4BR 0.91996
+/gammaline/NuDatBR 0.930
+/gammaline/SigRegion 0.4
 /gammaline/BkgRegion 10
 
-/gps/ion 55 137 0 0
-/grdm/nucleusLimits 137 137 55 55 
-/run/beamOn 10000000
+/gammaline/energy 78.3
+/gammaline/G4BR 0.9667
+/gammaline/NuDatBR 0.964
+/gammaline/SigRegion 0.4
+/gammaline/BkgRegion 10
 
+/gps/ion 22 44 0 0
+/grdm/nucleusLimits 44 44 22 22 
+/run/beamOn 10000000

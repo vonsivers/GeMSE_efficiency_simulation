@@ -3,12 +3,17 @@ GeMSE efficiency simulation
 Geant4 code to simulate the detection efficiency for a sample in GeMSE
 
 ## Usage
+* You can run the efficiency simulation for all standard isotopes in parallel by
 ```
-GeMSE_efficiency -m <macrofile.mac> -g <geometry_file.txt> -o <results_folder>
+./run.sh <geometry_file.txt> <results_folder>
+```
+* To run a specific macro without parallelization do
+```
+GeMSE_efficiency -m <macrofile.mac> -g <geometry_file.txt> -o <results_folder> -f <results_file>
 ```
 
 ## Output
-* simulated_efficiencies.root
+* results_file.root
 	* TTree "tree": Tree with information about detection efficiency and branching ratio (emission probability) for every gamma line
 		* TBranch "energy": energy of gamma line
 		* TBranch "efficiency": detection efficiency

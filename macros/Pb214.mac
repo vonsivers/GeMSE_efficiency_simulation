@@ -39,4 +39,4 @@
 
 /gps/ion 82 214 0 0
 /grdm/nucleusLimits 214 214 82 82 
-/run/beamOn 100000
+/run/beamOn 10000000

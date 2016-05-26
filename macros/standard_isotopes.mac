@@ -18,9 +18,6 @@
 
 /gps/pos/confine sample
 
-/gps/energy 0 keV
-/gps/particle ion
-
 
 ##############################
 #simulate gammas only
