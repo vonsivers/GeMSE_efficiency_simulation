@@ -1,0 +1,63 @@
+####################################################
+#efficiency simulation for GeMSE
+####################################################
+
+/gps/energy 0 keV
+/gps/particle ion
+
+
+#Co56
+/energy 846.8
+/energy 1238.3
+/file results/Co56_BR.txt
+
+/gps/ion 27 56 0 0
+/grdm/nucleusLimits 56 56 27 27 
+/run/beamOn 1000000
+
+
+#Co57
+/energy 122.1
+/energy 136.5
+/file results/Co57_BR.txt
+
+/gps/ion 27 57 0 0
+/grdm/nucleusLimits 57 57 27 27 
+/run/beamOn 1000000
+
+
+#Co58
+/energy 810.8
+/file results/Co58_BR.txt
+
+/gps/ion 27 58 0 0
+/grdm/nucleusLimits 58 58 27 27 
+/run/beamOn 1000000
+
+
+#Be7
+/energy 477.6
+/file results/Be7_BR.txt
+
+/gps/ion 4 7 0 0
+/grdm/nucleusLimits 7 7 4 4 
+/run/beamOn 1000000
+
+
+#Sc46
+/energy 889.3
+/file results/Sc46_BR.txt
+
+/gps/ion 21 46 0 0
+/grdm/nucleusLimits 46 46 21 21 
+/run/beamOn 1000000
+
+
+#V48
+/energy 983.5
+/energy 1312.1
+/file results/V48_BR.txt
+
+/gps/ion 23 48 0 0
+/grdm/nucleusLimits 48 48 23 23 
+/run/beamOn 1000000

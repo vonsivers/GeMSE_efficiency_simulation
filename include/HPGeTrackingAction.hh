@@ -24,84 +24,40 @@
 // ********************************************************************
 //
 //
-// $Id: HPGeRunAction.cc,v 1.10 2006/06/29 17:54:31 gunter Exp $
+// $Id: HPGeRunAction.hh,v 1.9 2006/06/29 17:54:10 gunter Exp $
 // GEANT4 tag $Name: geant4-09-01-patch-02 $
 // 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-// Make this appear first!
-#include "G4Timer.hh"
+#ifndef HPGeTrackingAction_h
+#define HPGeTrackingAction_h 1
 
+
+#include "globals.hh"
+#include "G4UserTrackingAction.hh"
 #include "HPGeRunAction.hh"
-#include "HPGeAnalysis.hh"
-#include "HPGeRunMessenger.hh"
-
-#include "G4Run.hh"
-#include "G4RunManager.hh"
-
-#include "TTree.h"
-
-//#include <time.h>
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-HPGeRunAction::HPGeRunAction()
-{
-    timer = new G4Timer;
-    
-    // create run analysis
-    fRunAnalysis = new HPGeAnalysis();
-    
-    //create a messenger for this class
-    runMessenger = new HPGeRunMessenger(fRunAnalysis);
-}
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-HPGeRunAction::~HPGeRunAction()
+class HPGeTrackingAction : public G4UserTrackingAction
 {
-    delete timer;
-    //delete fRunAnalysis;
-    delete runMessenger;
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void HPGeRunAction::BeginOfRunAction(const G4Run* aRun)
-{
-    
-    G4int RunID = aRun->GetRunID();
-    
-    G4int NEvents = aRun->GetNumberOfEventToBeProcessed();
-    
-    // set Nb of events
-    fRunAnalysis->SetNEvents(NEvents);
-    
-    G4cout << "### Run " << RunID << " started with " << NEvents << " events." << G4endl;
-    timer->Start();
-    
-}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void HPGeRunAction::EndOfRunAction(const G4Run*)
-{
-    
-	// calculate BR
-    fRunAnalysis->CalcBR();
-        
-    // clear data
-    fRunAnalysis->Clear();
-  
-	timer->Stop();
+  public:
+    HPGeTrackingAction();
+	virtual ~HPGeTrackingAction();
 	
-	G4cout << "\n" << "### Finished ###" << G4endl;
-	G4cout << "Runtime: " << *timer << G4endl;
-	
-}
+	virtual void PreUserTrackingAction(const G4Track* theTrack);
+	virtual void PostUserTrackingAction(const G4Track* );
+		
+
+  private:	
+    TH1D* fhTotEdep;
 
 
+};
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#endif 
+

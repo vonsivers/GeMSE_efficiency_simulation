@@ -60,8 +60,6 @@ private:
 	//exrdmPhysicsList & operator=(const exrdmPhysicsList &right);
 	//exrdmPhysicsList(const exrdmPhysicsList&);
 	
-	
-	G4VPhysicsConstructor*  emPhysicsList;
 	G4VPhysicsConstructor*  raddecayList;
 	G4VPhysicsConstructor*  particleList;
     

@@ -42,14 +42,13 @@
 class HPGeDetectorConstruction : public G4VUserDetectorConstruction
 {
   public:
-    HPGeDetectorConstruction(G4String GeometryFile);
+    HPGeDetectorConstruction();
    ~HPGeDetectorConstruction();
 
   public:
     G4VPhysicalVolume* Construct();
 
   private:
-    G4String fGeometryFile;
 
 };
 

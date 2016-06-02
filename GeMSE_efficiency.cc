@@ -9,16 +9,12 @@
 #include "HPGePhysicsList.hh"
 #include "HPGePrimaryGeneratorAction.hh"
 #include "HPGeRunAction.hh"
+#include "HPGeTrackingAction.hh"
 
 #include "Randomize.hh"
 #include <time.h>
 #include <getopt.h>
 
-#include <TFile.h>
-#include <TTree.h>
-#include <TCanvas.h>
-#include <TSystem.h>
-#include <TString.h>
 
 #include "G4VisExecutive.hh"
 
@@ -46,12 +42,8 @@ int main(int argc, char** argv)//
     int c = 0;
     bool Macro = false;
     G4String MacroFilename;
-    G4String GeometryFilename = "worldVolume.txt";
-    G4String OutputFolder = "";
-    G4String OutputFile = "simulated_efficiencies";
-	G4String outputname;
     
-    while((c = getopt(argc,argv,"m:o:g:f:")) != -1)
+    while((c = getopt(argc,argv,"m:")) != -1)
     {
         switch(c)
         {
@@ -59,64 +51,18 @@ int main(int argc, char** argv)//
                 Macro = true;
                 MacroFilename = optarg;
                 break;
-                
-            case 'g':
-                GeometryFilename = optarg;
-                break;
-                
-            case 'o':
-                OutputFolder = optarg;
-                break;
-                
-            case 'f':
-                OutputFile = optarg;
-                break;
-                
         }
     }
     
-    // initialize pointers
-    TFile* file = 0;
-    TTree* tree = 0;
-    
-    // check if output folder was specified
-    if (OutputFolder=="") {
-        std::cout << "###### WARNING: no folder specified, no output will be written " << std::endl;
-
-    }
-    else {
-    
-        // try to open results directory
-        if (!gSystem->OpenDirectory(OutputFolder)) {
-            
-            // if directory does not exist make one
-            if (gSystem->MakeDirectory(OutputFolder)==-1) {
-                std::cout << "###### ERROR: could not create directory " << OutputFolder << std::endl;
-                return 0;
-            }
-        }
-        
-        // create output file
-        outputname = OutputFolder+"/"+OutputFile;
-		TString rootfile = outputname+".root";
-        file = new TFile(rootfile,"Create");
-        
-        if (file->IsZombie()) {
-            G4cout << "###### ERROR: could not create file " << outputname << G4endl;
-            return 0;
-        }
-        
-        tree = new TTree("tree","tree");
-        
-    }
-    
+  
+          
     // Run manager
     //
     G4RunManager* runManager = new G4RunManager;
     
     // UserInitialization classes - mandatory
     //
-    G4VUserDetectorConstruction* detector = new HPGeDetectorConstruction(GeometryFilename);
+    G4VUserDetectorConstruction* detector = new HPGeDetectorConstruction();
     runManager-> SetUserInitialization(detector);
     //
     G4VUserPhysicsList* physics = new HPGePhysicsList;
@@ -129,18 +75,19 @@ int main(int argc, char** argv)//
     
     // UserAction classes
     //
-    HPGeRunAction* run_action = new HPGeRunAction(tree);
+    HPGeRunAction* run_action = new HPGeRunAction();
     runManager->SetUserAction(run_action);
     //
     HPGePrimaryGeneratorAction* gen_action = new HPGePrimaryGeneratorAction;
     runManager->SetUserAction(gen_action);
+	//
+	G4UserTrackingAction* track_action = new HPGeTrackingAction;
+    runManager->SetUserAction(track_action);
+
     
     // Initialize G4 kernel
     //
     runManager->Initialize();
-    
-    
-    
     
 	
 
@@ -166,22 +113,6 @@ int main(int argc, char** argv)//
 	  
 	}
 		
-	
-    if (OutputFolder!="") {
-        //------------- plot efficiency curve -------------------
-        TCanvas* c1 = new TCanvas("c1");
-        tree->Draw("efficiency:energy","","*");
-        TString graphfile = outputname+".pdf";
-        c1->SaveAs(graphfile);
-
-        
-        //-------------------------------------------------------
-        
-        file->cd();
-        tree->Write();
-        file->Close();
-    }
-
 	
   // Job termination
   // Free the store: user actions, physics_list and detector_description are

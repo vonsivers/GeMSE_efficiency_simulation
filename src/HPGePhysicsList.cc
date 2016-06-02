@@ -28,8 +28,6 @@
 #include "HPGePhysicsList.hh"
 
 #include "HPGePhysListParticles.hh"
-#include "G4EmLivermorePhysics.hh"
-#include "G4EmStandardPhysics.hh"
 
 #include "G4RegionStore.hh"
 #include "G4Region.hh"
@@ -60,10 +58,6 @@ HPGePhysicsList::HPGePhysicsList() : G4VModularPhysicsList()
 	//default physics
 	raddecayList = new G4RadioactiveDecayPhysics();
 	
-	// EM physics
-	emPhysicsList = new G4EmLivermorePhysics();
-    //emPhysicsList = new G4EmStandardPhysics();
-	
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -71,7 +65,6 @@ HPGePhysicsList::HPGePhysicsList() : G4VModularPhysicsList()
 HPGePhysicsList::~HPGePhysicsList()
 {
 	delete raddecayList;
-	delete emPhysicsList;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -86,8 +79,6 @@ void HPGePhysicsList::ConstructParticle()
 void HPGePhysicsList::ConstructProcess()
 {
 	AddTransportation();
-	// em
-	emPhysicsList->ConstructProcess();
 	// decays
 	particleList->ConstructProcess();
 	raddecayList->ConstructProcess();

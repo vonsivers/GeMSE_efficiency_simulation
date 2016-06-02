@@ -38,6 +38,7 @@
 
 class HPGeRunAction;
 class G4UIcmdWithADouble;
+class G4UIcmdWithAString;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -51,15 +52,12 @@ class HPGeRunMessenger: public G4UImessenger
     
   private:
     
-    HPGeAnalysis* fRunAnalysis = new HPGeAnalysis();
+    HPGeAnalysis* fRunAnalysis;
     
     G4UIdirectory* runDirectory;
     
+	G4UIcmdWithAString* fileCmd;
     G4UIcmdWithADouble* energyCmd;
-    G4UIcmdWithADouble* G4BRCmd;
-    G4UIcmdWithADouble* NuDatBRCmd;
-    G4UIcmdWithADouble* SigRegionCmd;
-    G4UIcmdWithADouble* BkgRegionCmd;
 
 };
 
